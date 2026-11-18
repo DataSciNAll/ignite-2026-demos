@@ -1,7 +1,7 @@
 # FinOps on Microsoft Foundry
 
 > [!TIP]
-> **Interactive version:** Right-click [this link to the FinOps on Microsoft Foundry page (HTML)](https://github.com/microsoft-foundry/ignite-2026-demos/raw/main/finops-on-microsoft-foundry/finops-on-microsoft-foundry.html), choose **Save link as**, then open the saved file in your browser for a guided tour of everything below, with filterable sessions and interactive examples.
+> **Interactive version:** Explore [FinOps on Microsoft Foundry](https://aka.ms/findops-for-foundry-ignite-2026) for a guided tour of everything below, with filterable sessions and interactive examples.
 
 ## FinOps in Microsoft Foundry: full demo
 
