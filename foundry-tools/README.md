@@ -1,5 +1,8 @@
 # Foundry Tools
 
+> [!TIP]
+> **Interactive version:** Explore [Foundry Tools at Ignite 2026](https://aka.ms/foundrytoolsignite26) for a guided tour of Foundry Tools.
+
 Explore Foundry Tools for connecting AI agents to business context and specialized AI capabilities.
 
 ## Topics covered
