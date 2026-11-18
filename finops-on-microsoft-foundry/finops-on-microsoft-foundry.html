@@ -1,0 +1,2078 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="FinOps on Microsoft Foundry from Microsoft Ignite 2026: the full demo, blog post, sessions, deck, documentation, blog series, video, and hands-on lab for managing AI cost.">
+<title>FinOps on Microsoft Foundry · Microsoft Ignite 2026</title>
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#03032e;
+  --ink:#ffffff;
+  --ink-2:#dcdef6;
+  --muted:#a9addb;
+  --line:rgba(255,255,255,.12);
+  --line-2:rgba(255,255,255,.24);
+  --card-a:rgba(32,32,116,.50);
+  --card-b:rgba(13,13,66,.62);
+  --chip:#1d2573;
+  --chip-ink:#e3e7ff;
+  --eyebrow:#8fd6ff;
+  --cyan:#3ee8ff;
+  --teal:#22d8a8;
+  --green:#4ef07a;
+  --yellow:#ffe14d;
+  --amber:#ffb23f;
+  --pink:#ff6ad5;
+  --violet:#9a6bff;
+  --blue:#2f6bff;
+  --danger:#ff5c8a;
+  --btn:#efeff4;
+  --btn-ink:#0a0a2a;
+  --r-lg:22px;
+  --font:"Segoe UI Variable Text","Segoe UI Variable","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --display:"Segoe UI Variable Display","Segoe UI Variable","Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+  --mono:"Cascadia Code","Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --grad:linear-gradient(90deg,var(--cyan),var(--violet) 55%,var(--pink));
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+body.modal-open{overflow:hidden}
+a{color:#bfe9ff;text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{color:#fff}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+svg{display:block}
+h1,h2,h3,h4,h5{margin:0;line-height:1.2;font-weight:600;text-wrap:balance}
+p{margin:0 0 14px}
+ul,ol{margin:0;padding:0}
+b,strong{font-weight:600}
+.wrap{width:min(1200px,100% - 48px);margin-inline:auto}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+html:not(.js) .js-only{display:none!important}
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+[hidden]{display:none!important}
+.ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ic.fill{fill:currentColor;stroke:none}
+.skip{position:absolute;inset-inline-start:16px;top:-64px;z-index:200;background:var(--btn);color:var(--btn-ink);padding:10px 14px;border-radius:8px;font-weight:600;text-decoration:none;transition:top .2s}
+.skip:focus{top:12px}
+.tiny{font-size:.8rem}
+.muted{color:var(--muted)}
+
+/* Buttons + chips */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font:inherit;font-size:.95rem;font-weight:600;line-height:1.2;padding:11px 18px;border-radius:6px;border:1.5px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .2s,color .2s,border-color .2s,transform .2s var(--ease),box-shadow .2s}
+.btn:active{transform:translateY(1px)}
+.btn-light{background:var(--btn);color:var(--btn-ink)}
+.btn-light:hover{background:#fff;color:#000;box-shadow:0 0 0 4px rgba(62,232,255,.2)}
+.btn-outline{background:transparent;color:#fff;border-color:#fff}
+.btn-outline:hover{background:rgba(255,255,255,.1);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.06);color:#fff;border-color:var(--line-2)}
+.btn-ghost:hover{background:rgba(255,255,255,.13);color:#fff}
+.btn-lg{padding:14px 22px;font-size:1rem}
+.btn-sm{padding:8px 14px;font-size:.88rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
+kbd{font-family:var(--mono);font-size:.72rem;line-height:1;padding:3px 6px;border-radius:4px;border:1px solid rgba(255,255,255,.3);color:#cfd3f5;background:rgba(255,255,255,.06)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--chip);color:var(--chip-ink);font-size:.78rem;font-weight:600;line-height:1.2;padding:5px 10px;border-radius:6px;white-space:nowrap}
+.chip-code{font-family:var(--mono);letter-spacing:.02em;background:rgba(255,255,255,.09)}
+.chip-hot{background:rgba(255,106,213,.18);color:#ffd3f2}
+.chip-ok{background:rgba(34,216,168,.17);color:#c9fff1}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips .chip{white-space:normal;max-width:100%}
+
+/* Top bar */
+.topbar{position:sticky;top:0;z-index:60;background:rgba(0,0,0,.9);-webkit-backdrop-filter:saturate(1.3) blur(12px);backdrop-filter:saturate(1.3) blur(12px);border-bottom:1px solid rgba(255,255,255,.08)}
+.bar-inner{display:flex;align-items:center;gap:18px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;white-space:nowrap}
+.brand:hover{color:#fff}
+.ms-logo{width:22px;height:22px}
+.brand .ms{font-size:1.2rem;font-weight:600;letter-spacing:-.01em}
+.brand .sep{width:1.5px;height:24px;background:rgba(255,255,255,.75);margin-inline:6px}
+.brand .ev{font-size:.95rem;font-weight:600}
+.nav{display:flex;gap:2px;margin-inline-start:10px}
+.nav a{color:#e8e9f6;text-decoration:none;font-size:.92rem;font-weight:500;padding:8px 13px;border-radius:999px;transition:background .2s,color .2s;white-space:nowrap}
+.nav a:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav a.active{background:rgba(255,255,255,.15);color:#fff}
+.bar-actions{margin-inline-start:auto;display:flex;align-items:center;gap:10px}
+.btn-search{background:rgba(255,255,255,.07);color:#e6e7f7;border:1px solid var(--line-2);border-radius:8px;padding-block:8px;padding-inline:12px 10px;font-weight:500;font-size:.9rem}
+.btn-search:hover{background:rgba(255,255,255,.13);color:#fff}
+.nav-toggle{display:none;background:transparent;border:1px solid var(--line-2);color:#fff;border-radius:8px;width:42px;height:40px;align-items:center;justify-content:center;cursor:pointer}
+.progress{position:absolute;inset-inline:0;bottom:-1px;height:3px;pointer-events:none}
+.progress span{display:block;height:100%;width:0;background:var(--grad);box-shadow:0 0 12px rgba(62,232,255,.6)}
+
+/* Hero */
+.hero{position:relative;isolation:isolate;overflow:hidden;padding:clamp(72px,10vw,120px) 0 64px;background:radial-gradient(900px 560px at 82% -8%,rgba(47,107,255,.38),transparent 62%),radial-gradient(760px 520px at -6% 8%,rgba(154,107,255,.24),transparent 60%),radial-gradient(600px 400px at 60% 110%,rgba(255,106,213,.14),transparent 60%),linear-gradient(180deg,#06064a 0%,var(--bg) 100%)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background-image:linear-gradient(rgba(110,140,255,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(110,140,255,.13) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:radial-gradient(640px 460px at 76% 34%,#000 0%,transparent 72%);mask-image:radial-gradient(640px 460px at 76% 34%,#000 0%,transparent 72%)}
+.hero-art{position:absolute;z-index:-1;top:-24px;inset-inline-end:-90px;width:min(860px,66vw);height:auto;pointer-events:none}
+.hero-inner{position:relative}
+.eyebrow{display:inline-block;font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--eyebrow);margin:0}
+.hero h1{font-family:var(--display);font-size:clamp(2.6rem,6.2vw,4.9rem);line-height:1.03;letter-spacing:-.03em;font-weight:600;margin:18px 0 22px}
+.grad-text{background:linear-gradient(92deg,#ffffff 0%,#cfe0ff 30%,var(--cyan) 68%,#b9a2ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(1.05rem,1.55vw,1.2rem);line-height:1.6;color:var(--ink-2);max-width:64ch}
+.hero .lead{max-width:56ch}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;align-items:center}
+.kpis{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:64px}
+.kpi{position:relative;padding:20px 20px 18px;border-radius:18px;background:linear-gradient(180deg,rgba(28,28,104,.64),rgba(10,10,60,.64));border:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);overflow:hidden}
+.kpi::after{content:"";position:absolute;inset-inline:0;top:0;height:2px;background:var(--k)}
+.kpi b{display:block;font-family:var(--display);font-size:clamp(2rem,3vw,2.5rem);font-weight:600;line-height:1.1;letter-spacing:-.02em;margin-bottom:6px;background:var(--k);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kpi .t{display:block;color:var(--ink-2);font-size:.9rem;line-height:1.45}
+.k1{--k:linear-gradient(90deg,var(--pink),var(--violet))}
+.k2{--k:linear-gradient(90deg,var(--cyan),#7aa2ff)}
+.k3{--k:linear-gradient(90deg,var(--green),var(--yellow))}
+.k4{--k:linear-gradient(90deg,var(--amber),var(--pink))}
+.lane{stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 2.4s var(--ease) forwards}
+.lane.l2{animation-delay:.1s}.lane.l3{animation-delay:.2s}.lane.l4{animation-delay:.3s}.lane.l5{animation-delay:.4s}.lane.l6{animation-delay:.5s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.pulse{stroke-dasharray:60 940;stroke-dashoffset:1000;animation:run 7s linear infinite}
+.pulse.p2{animation-duration:8.5s;animation-delay:-2s}.pulse.p3{animation-duration:6.2s;animation-delay:-4s}.pulse.p4{animation-duration:9s;animation-delay:-1s}
+@keyframes run{from{stroke-dashoffset:1000}to{stroke-dashoffset:0}}
+
+/* Sections */
+section{scroll-margin-top:72px}
+.section{position:relative;padding:clamp(72px,9vw,112px) 0}
+.section.tint{background:linear-gradient(180deg,rgba(47,107,255,.06),rgba(47,107,255,0) 60%)}
+.sec-head{max-width:880px;margin-bottom:44px}
+.sec-head h2{font-family:var(--display);font-size:clamp(2rem,3.8vw,3.1rem);line-height:1.08;letter-spacing:-.022em;margin:14px 0 16px}
+.sec-head .lead{margin:0}
+.hash{color:var(--muted);text-decoration:none;font-weight:400;margin-inline-start:.3em;opacity:0;transition:opacity .2s}
+.sec-head h2:hover .hash,.hash:focus{opacity:1}
+.card{position:relative;background:linear-gradient(180deg,var(--card-a),var(--card-b));border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(20px,2.4vw,30px)}
+.hoverable{transition:border-color .25s,transform .25s var(--ease),box-shadow .25s}
+.hoverable:hover{border-color:rgba(62,232,255,.45);transform:translateY(-3px);box-shadow:0 18px 50px rgba(0,0,0,.35),0 0 0 1px rgba(62,232,255,.15)}
+.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.js .reveal.in{opacity:1;transform:none}
+
+/* Demo */
+.demo-top{display:grid;grid-template-columns:minmax(0,1.22fr) minmax(0,.78fr);gap:28px;align-items:start}
+.video{position:relative;aspect-ratio:16/9;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:#04043a;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.video-poster{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;margin:0;cursor:pointer;background:radial-gradient(600px 300px at 30% 110%,rgba(47,107,255,.35),transparent 60%),linear-gradient(160deg,#0b0b58,#04043a 60%);color:#fff;font:inherit;text-align:start;display:block;overflow:hidden}
+.video-poster .art{position:absolute;inset:0;width:100%;height:100%}
+.video-poster::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,3,40,0) 40%,rgba(3,3,40,.88))}
+.center{position:absolute;inset:0;display:grid;place-items:center;z-index:2}
+.play{position:relative;width:88px;height:88px;border-radius:50%;background:#fff;color:#0a0a2a;display:grid;place-items:center;box-shadow:0 0 0 10px rgba(255,255,255,.12),0 0 60px rgba(62,232,255,.55);transition:transform .25s var(--ease),box-shadow .25s}
+.play .ic{width:34px;height:34px;margin-inline-start:4px}
+.play::after{content:"";position:absolute;inset:-10px;border-radius:50%;border:2px solid rgba(255,255,255,.5);animation:ring 2.4s ease-out infinite}
+@keyframes ring{from{transform:scale(1);opacity:.8}to{transform:scale(1.45);opacity:0}}
+.video-poster:hover .play,.yt:hover .play{transform:scale(1.06);box-shadow:0 0 0 14px rgba(255,255,255,.14),0 0 80px rgba(62,232,255,.7)}
+.poster-meta{position:absolute;inset-inline:24px;bottom:20px;display:grid;gap:6px;z-index:2}
+.poster-meta .pt{font-family:var(--display);font-size:clamp(1.15rem,2vw,1.55rem);font-weight:600;line-height:1.2}
+.poster-meta .ps{color:var(--ink-2);font-size:.92rem}
+.video video{position:absolute;inset:0;width:100%;height:100%;background:#000}
+.video-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.video-fallback{margin-top:12px;padding:12px 14px;border-radius:12px;background:rgba(255,178,63,.1);border:1px solid rgba(255,178,63,.45);color:#ffe7c2;font-size:.92rem}
+.demo-side h3{font-size:1.15rem;margin-bottom:16px}
+.facts{list-style:none;display:grid;gap:14px}
+.facts li{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;color:var(--ink-2);font-size:.95rem}
+.facts .ic{color:var(--cyan);margin-top:2px}
+.facts b{color:#fff}
+
+/* Story */
+.story{margin-top:44px}
+.story-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.story-head h3{font-family:var(--display);font-size:clamp(1.35rem,2.2vw,1.7rem);margin-top:8px}
+.story-nav{display:flex;align-items:center;gap:8px}
+.icon-btn{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;border:1px solid var(--line-2);background:rgba(255,255,255,.05);color:#fff;cursor:pointer;transition:background .2s}
+.icon-btn:hover:not([disabled]){background:rgba(255,255,255,.15)}
+.icon-btn[disabled]{opacity:.35;cursor:not-allowed}
+.story-count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.9rem;min-width:3.4em;text-align:center}
+.story-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.story-tab{position:relative;display:flex;flex-direction:column;gap:2px;text-align:start;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:#fff;font:inherit;cursor:pointer;overflow:hidden;transition:border-color .2s,background .2s}
+.story-tab .n{font-size:.72rem;font-weight:700;letter-spacing:.12em;color:var(--eyebrow)}
+.story-tab .t{font-weight:600;font-size:.98rem;line-height:1.3}
+.story-tab::after{content:"";position:absolute;inset-inline:0;bottom:0;height:3px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+.story-tab:hover{border-color:var(--line-2)}
+.story-tab[aria-selected="true"]{background:linear-gradient(180deg,rgba(62,232,255,.15),rgba(154,107,255,.10));border-color:rgba(62,232,255,.55)}
+.story-tab[aria-selected="true"]::after{transform:scaleX(1)}
+.story-panel{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:center}
+.story-panel h4{font-family:var(--display);font-size:clamp(1.3rem,2.2vw,1.7rem);margin:12px 0 12px;line-height:1.2}
+.story-panel p{color:var(--ink-2)}
+html:not(.js) [role="tabpanel"] + [role="tabpanel"]{margin-top:28px;padding-top:28px;border-top:1px solid var(--line)}
+[role="tabpanel"]:focus-visible{outline-offset:6px;border-radius:12px}
+
+/* Visuals */
+.viz{position:relative;background:linear-gradient(180deg,rgba(4,4,48,.78),rgba(8,8,60,.6));border:1px solid var(--line);border-radius:18px;padding:20px 20px 18px;min-height:250px}
+.viz-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.viz-foot{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 0;flex-wrap:wrap}
+.bars{display:flex;align-items:stretch;justify-content:center;gap:clamp(18px,4vw,44px);height:200px}
+.bar{display:flex;flex-direction:column;align-items:center;gap:8px;width:86px}
+.bar .track{flex:1 1 auto;min-height:0;width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px}
+.bar b{font-family:var(--display);font-size:1.25rem;font-weight:600}
+.bar i{display:block;width:100%;height:calc(var(--h) * .78);border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,var(--cyan),var(--blue));box-shadow:0 0 24px rgba(62,232,255,.35);transition:height 1s var(--ease)}
+.bar.v2 i{background:linear-gradient(180deg,var(--pink),var(--violet));box-shadow:0 0 30px rgba(255,106,213,.45)}
+.bar.v3 i{background:linear-gradient(180deg,var(--green),var(--teal));box-shadow:0 0 24px rgba(78,240,122,.35)}
+.bar small{color:var(--muted);font-weight:600;font-size:.85rem}
+.js .viz:not(.in) .bar i{height:0}
+.drill{display:grid;gap:16px;margin-top:8px}
+.drill-row{display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:center}
+.drill-l,.cmp-row > span{font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.drill-bar{display:flex;gap:4px;height:38px}
+.drill-bar i{display:flex;align-items:center;padding-inline:10px;border-radius:8px;background:rgba(255,255,255,.08);flex:0 1 var(--w);font-style:normal;font-size:.82rem;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;transition:flex-basis 1s var(--ease)}
+.drill-bar i.hot{background:linear-gradient(90deg,rgba(255,106,213,.8),rgba(154,107,255,.8));box-shadow:0 0 22px rgba(255,106,213,.35)}
+.js .viz:not(.in) .drill-bar i{flex-basis:0}
+.drill-note{margin:16px 0 0;font-size:.85rem;color:var(--ink-2);display:flex;gap:8px;align-items:center}
+.trace-steps{list-style:none;display:grid;gap:9px;margin-bottom:16px}
+.trace-steps li{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;font-size:.82rem;color:var(--ink-2)}
+.trace-steps i{display:block;height:12px;border-radius:6px;background:linear-gradient(90deg,var(--pink),var(--violet));width:var(--w);transition:width 1s var(--ease)}
+.js .viz:not(.in) .trace-steps i{width:0}
+.tag{font-style:normal;font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:6px;background:rgba(255,106,213,.18);color:#ffd3f2;white-space:nowrap}
+.prompt-mini{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pm{font-size:.76rem;font-weight:600;padding:6px 10px;border-radius:8px;border:1px dashed var(--line-2);color:var(--ink-2)}
+.pm.changing{border-style:solid;border-color:rgba(255,178,63,.7);color:#ffe0ad;background:rgba(255,178,63,.12)}
+.pm.flagged{border-style:solid;border-color:rgba(255,106,213,.7);background:rgba(255,106,213,.12);color:#ffd3f2}
+.viz-notes{display:grid;gap:8px;font-size:.84rem;color:var(--ink-2)}
+.viz-notes span{display:grid;grid-template-columns:18px 1fr;gap:8px;align-items:start}
+.viz-notes .ic{width:18px;height:18px;margin-top:2px;color:var(--amber)}
+.viz-notes span + span .ic{color:var(--pink)}
+.cmp{display:grid;gap:18px;margin-top:6px}
+.cmp-row{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center}
+.cmp-bars{display:grid;gap:8px}
+.cmp-bars div{display:grid;grid-template-columns:1fr 150px;gap:10px;align-items:center;font-size:.8rem;color:var(--ink-2)}
+.cmp-bars i{display:block;height:14px;border-radius:7px;width:var(--w);background:linear-gradient(90deg,var(--blue),var(--violet));transition:width 1s var(--ease)}
+.cmp-bars i.ok{background:linear-gradient(90deg,var(--teal),var(--green))}
+.js .viz:not(.in) .cmp-bars i{width:0}
+.v3-note{margin-top:18px;display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;padding:12px 14px;border-radius:12px;background:rgba(78,240,122,.1);border:1px solid rgba(78,240,122,.4);font-size:.86rem;color:var(--ink-2)}
+.v3-note .ic{color:var(--green)}
+.v3-note b{color:#fff}
+.scopes{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+.scopes span{font-size:.78rem;font-weight:600;padding:6px 11px;border-radius:999px;border:1px solid var(--line-2);color:var(--ink-2)}
+.scopes span.on{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.meter-wrap{padding-top:28px}
+.meter{position:relative;height:16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--line)}
+.meter .fill{position:absolute;inset-block:0;inset-inline-start:0;width:var(--w,0%);border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--blue));box-shadow:0 0 18px rgba(62,232,255,.45);transition:width .6s var(--ease),background .3s}
+.meter.is-alert .fill{background:linear-gradient(90deg,var(--yellow),var(--amber));box-shadow:0 0 18px rgba(255,178,63,.5)}
+.meter.is-block .fill{background:linear-gradient(90deg,var(--pink),var(--danger));box-shadow:0 0 18px rgba(255,92,138,.55)}
+.js .viz:not(.in) .meter .fill{width:0}
+.mark{position:absolute;top:-7px;bottom:-7px;inset-inline-start:var(--x);width:2px;margin-inline-start:-1px;background:rgba(255,255,255,.85);border-radius:2px}
+.mark::after{content:attr(data-l);position:absolute;top:-24px;inset-inline-end:6px;font-size:.72rem;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.scope-note{margin:22px 0 0;font-size:.85rem;color:var(--muted)}
+
+/* Simulator */
+.sim{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(20px,3vw,44px);margin-top:28px}
+.sim::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(120deg,rgba(62,232,255,.65),rgba(154,107,255,.2) 45%,rgba(255,106,213,.65));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);pointer-events:none}
+.sim h3{font-family:var(--display);font-size:clamp(1.4rem,2.3vw,1.75rem);margin:10px 0 12px}
+.sim p{color:var(--ink-2)}
+.sim-stats{display:flex;flex-wrap:wrap;gap:10px 28px;margin:18px 0 22px}
+.sim-stats dt{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.sim-stats dd{margin:0;font-family:var(--display);font-size:1.15rem;font-weight:600}
+.sim-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.sim-readout{display:flex;align-items:baseline;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.sim-readout b{font-family:var(--display);font-size:1.9rem;color:#fff}
+.sim-readout .pct{font-family:var(--display);font-size:1.2rem;font-weight:600;color:#fff}
+.sim-status{min-height:68px;margin:22px 0 14px;display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;padding:12px 14px;border-radius:12px;border:1px dashed var(--line-2);color:var(--muted);font-size:.9rem}
+.sim-status .ic{width:22px;height:22px;margin-top:1px}
+.sim-status b{display:block;color:#fff;margin-bottom:2px}
+.sim-status.alert,.sim-status.full{border-style:solid;border-color:rgba(255,178,63,.7);background:rgba(255,178,63,.1);color:#ffe7c2}
+.sim-status.alert .ic,.sim-status.full .ic{color:var(--amber)}
+.sim-status.block{border-style:solid;border-color:rgba(255,92,138,.75);background:rgba(255,92,138,.12);color:#ffd5e2}
+.sim-status.block .ic{color:var(--danger)}
+.log{list-style:none;display:grid;gap:6px;max-height:212px;overflow:auto;padding-inline-end:4px}
+.log li{display:flex;justify-content:space-between;gap:10px;font-size:.85rem;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-variant-numeric:tabular-nums;color:var(--ink-2);animation:pop .35s var(--ease)}
+.log li b{color:#fff}
+.log li.warn{border-color:rgba(255,178,63,.55)}
+.log li.blocked{border-color:rgba(255,92,138,.65);color:#ffd5e2}
+@keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* Blog */
+.blog-grid{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(0,.72fr);gap:24px;align-items:start}
+.pills{display:inline-flex;flex-wrap:wrap;gap:4px;padding:5px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.pill{appearance:none;border:0;background:transparent;color:#e3e5f7;font:inherit;font-weight:600;font-size:.9rem;line-height:1.2;padding:10px 16px;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.pill:hover{background:rgba(255,255,255,.09);color:#fff}
+.pill[aria-selected="true"],.pill[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+.pill small{font-weight:500;opacity:.75}
+.tabpanel{padding-top:24px}
+.ticks{list-style:none;display:grid;gap:14px}
+.ticks li{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start;color:var(--ink-2)}
+.ticks .ic{color:var(--cyan);width:22px;height:22px;margin-top:1px}
+.ticks b{color:#fff}
+.sub-label{font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--eyebrow);margin:22px 0 10px}
+.levers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px}
+.lever{display:flex;gap:12px;align-items:center;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.lever .num{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:700;font-size:.85rem;background:var(--grad);color:#05052e}
+.lever b{display:block;font-size:.95rem;line-height:1.3}
+.lever span.s{display:block;font-size:.82rem;color:var(--muted)}
+.aside h3{font-size:1.1rem;margin-bottom:12px}
+.aside .viz{min-height:0;margin-bottom:10px}
+.aside-list{list-style:none;display:grid;gap:10px;margin:20px 0 22px}
+.aside-list li{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;color:var(--ink-2);font-size:.93rem}
+.aside-list .ic{color:var(--cyan);width:18px;height:18px;margin-top:3px}
+
+/* Sessions */
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:22px}
+.search-field{position:relative;display:flex;align-items:center;width:min(340px,100%)}
+.search-field .ic{position:absolute;inset-inline-start:12px;color:var(--muted);pointer-events:none}
+.search-field input{width:100%;font:inherit;font-size:.95rem;color:#fff;background:rgba(0,0,0,.35);border:1px solid var(--line-2);border-radius:10px;padding-block:10px;padding-inline:40px 14px;outline:none;transition:border-color .2s,box-shadow .2s}
+.search-field input::placeholder{color:#9ea3d6}
+.search-field input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(62,232,255,.2)}
+.sessions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.session{display:flex;flex-direction:column;gap:12px}
+.session h3{font-size:1.25rem;line-height:1.3}
+.session h3 a{color:#fff;text-decoration:underline;text-decoration-color:rgba(255,255,255,.45);text-underline-offset:5px}
+.session h3 a:hover{text-decoration-color:var(--cyan)}
+.session p{color:var(--ink-2);margin:0}
+.session .meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.88rem;color:var(--ink-2)}
+.session .meta span{display:inline-flex;align-items:center;gap:8px}
+.session .meta .ic{width:18px;height:18px}
+.session .actions{margin-top:auto;padding-top:8px}
+.session[hidden]{display:none}
+.count{color:var(--muted);font-size:.9rem;margin:0}
+.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line-2);border-radius:18px}
+.guide{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;margin-top:22px}
+.guide p{margin:0;color:var(--ink-2);max-width:62ch}
+.guide .btn{white-space:normal;text-align:start}
+.guide b{color:#fff}
+
+/* Deck */
+.deck-grid{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:24px;align-items:start}
+.deck-grid h3{font-size:1.1rem;margin-bottom:6px}
+.qs{display:grid;gap:10px;margin:14px 0 30px}
+.q{margin:0;max-width:88%;padding:14px 18px;border-radius:18px 18px 18px 4px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-family:var(--display);font-size:1.12rem;font-weight:500}
+.q.b{justify-self:end;border-radius:18px 18px 4px 18px;background:linear-gradient(90deg,rgba(62,232,255,.15),rgba(154,107,255,.15));border-color:rgba(62,232,255,.4)}
+.q-mid{justify-self:center;color:var(--muted);font-size:.82rem}
+.layers{display:grid;gap:10px;margin-top:14px}
+.layer{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);transition:border-color .25s,background .25s,transform .25s var(--ease)}
+.layer:hover{border-color:rgba(62,232,255,.45);background:rgba(62,232,255,.06);transform:translateX(4px)}
+.layer > b{font-size:.76rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--eyebrow)}
+.layer.l-cost > b{color:#ffc4ee}
+.layer.l-proc > b{color:#cdf7ae}
+.disc-steps{list-style:none;display:grid;gap:12px;counter-reset:s}
+.disc-steps li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;padding:14px;border-radius:14px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
+.disc-steps li::before{counter-increment:s;content:counter(s,decimal-leading-zero);display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.07);font-family:var(--display);font-weight:600;color:var(--cyan)}
+.disc-steps b{display:block;margin-bottom:2px;color:#fff}
+.disc-steps span{color:var(--ink-2);font-size:.93rem}
+.disc-steps .chips{margin-top:8px}
+.deck-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+
+/* Docs */
+.docs{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;align-items:start}
+.doc-tabs{display:flex;flex-direction:column;gap:10px;position:sticky;top:88px}
+.doc-tab{display:flex;gap:14px;align-items:center;text-align:start;padding:16px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:#fff;font:inherit;cursor:pointer;transition:border-color .2s,background .2s}
+.doc-tab .ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.07);color:var(--cyan);flex:none;transition:background .2s,color .2s}
+.doc-tab b{display:block;font-size:.98rem;line-height:1.3}
+.doc-tab small{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
+.doc-tab:hover{border-color:var(--line-2)}
+.doc-tab[aria-selected="true"]{border-color:rgba(62,232,255,.55);background:linear-gradient(90deg,rgba(62,232,255,.13),rgba(154,107,255,.08))}
+.doc-tab[aria-selected="true"] .ico{background:var(--grad);color:#05052e}
+.doc-panel h3{font-family:var(--display);font-size:clamp(1.4rem,2.4vw,1.9rem);margin:10px 0 12px}
+.doc-panel h3 a{color:#fff;text-decoration:none}
+.doc-panel h3 a:hover{text-decoration:underline}
+.doc-panel > p{color:var(--ink-2)}
+.widget{margin-top:22px;padding:20px;border-radius:18px;border:1px solid var(--line);background:rgba(3,3,40,.55)}
+.widget-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.widget-head h4{font-size:1.05rem}
+.widget h5{font-size:1rem;margin-bottom:8px}
+.link-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.link-chip{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:999px;border:1px solid var(--line-2);color:#fff;text-decoration:none;font-size:.88rem;font-weight:600;transition:background .2s,border-color .2s}
+.link-chip:hover{background:rgba(255,255,255,.1);border-color:#fff;color:#fff}
+.link-chip .ic{width:16px;height:16px}
+.lc-steps{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;position:relative}
+.lc-steps::before{content:"";position:absolute;inset-inline:10%;top:30px;height:2px;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));opacity:.5}
+.lc{width:100%;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px;border-radius:12px;border:1px solid transparent;background:transparent;color:var(--ink-2);font:inherit;font-size:.86rem;font-weight:600;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.lc .dot{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line-2);background:#07073f;font-weight:700;color:#fff;position:relative;z-index:1;transition:all .25s}
+.lc:hover{color:#fff}
+.lc[aria-pressed="true"]{background:rgba(255,255,255,.05);border-color:var(--line);color:#fff}
+.lc[aria-pressed="true"] .dot{background:var(--grad);border-color:transparent;color:#05052e;box-shadow:0 0 18px rgba(62,232,255,.5)}
+.lc-detail{margin-top:12px;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);min-height:100px}
+.lc-item h5{font-size:1rem;margin-bottom:6px}
+.lc-item p{margin:0;color:var(--ink-2)}
+html:not(.js) .lc-item + .lc-item{margin-top:14px}
+.billing{margin-top:22px}
+.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:stretch;gap:8px}
+.node{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;padding:14px 10px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--line);font-size:.85rem;font-weight:600;line-height:1.3}
+.node .ic{color:var(--cyan);width:24px;height:24px}
+.flow-arrow{align-self:center;width:34px;height:2px;background:repeating-linear-gradient(90deg,var(--cyan) 0 6px,transparent 6px 10px);background-size:20px 2px;animation:flow 1s linear infinite;position:relative}
+.flow-arrow::after{content:"";position:absolute;inset-inline-end:-3px;top:-4px;border:5px solid transparent;border-inline-start-color:var(--cyan);border-inline-end:0}
+@keyframes flow{to{background-position:20px 0}}
+@keyframes flowv{to{background-position:0 20px}}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.mini{padding:16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.mini h4{display:flex;align-items:center;gap:8px;font-size:1rem;margin-bottom:6px}
+.mini h4 .ic{color:var(--cyan)}
+.mini p{margin:0;color:var(--ink-2);font-size:.93rem}
+.note{display:grid;grid-template-columns:20px 1fr;gap:12px;align-items:start;margin-top:14px;padding:14px 16px;border-radius:14px;background:rgba(255,178,63,.08);border:1px solid rgba(255,178,63,.38);color:#ffe9c7;font-size:.92rem}
+.note .ic{color:var(--amber);margin-top:2px}
+.rt-chart{position:relative;height:132px;margin:30px 8px 4px}
+.rt-axis{position:absolute;inset-inline:0;top:64px;height:2px;background:linear-gradient(90deg,rgba(255,255,255,.12),rgba(255,255,255,.5))}
+.rt-band{position:absolute;top:26px;height:78px;inset-inline-start:var(--from,53%);width:calc(98% - var(--from,53%));border-radius:12px;background:linear-gradient(90deg,rgba(62,232,255,.08),rgba(62,232,255,.22));border:1px solid rgba(62,232,255,.6);transition:inset-inline-start .6s var(--ease),width .6s var(--ease)}
+.rt-band::before{content:attr(data-l);position:absolute;top:-24px;inset-inline-end:0;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);white-space:nowrap}
+.rt-model{position:absolute;top:44px;inset-inline-start:var(--x);transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;width:56px}
+.rt-model i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#15155a;border:2px solid rgba(255,255,255,.4);font-style:normal;font-weight:700;font-size:.9rem;transition:all .35s var(--ease)}
+.rt-model small{font-size:.74rem;color:var(--amber);font-weight:700;letter-spacing:.04em}
+.rt-model.inband i{border-color:var(--cyan)}
+.rt-model.picked i{background:var(--grad);color:#05052e;border-color:#fff;transform:scale(1.18);box-shadow:0 0 0 6px rgba(62,232,255,.18),0 0 28px rgba(62,232,255,.6)}
+.rt-scale{display:flex;justify-content:space-between;font-size:.74rem;color:var(--muted);margin:0 8px}
+.result{margin:14px 0 0;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--ink-2)}
+.result b{color:#fff}
+.result.good{border-color:rgba(62,232,255,.5)}
+.result.bad{border-color:rgba(255,178,63,.5)}
+.prompt{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.blk{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;border-radius:10px;border:1px solid var(--line-2);background:rgba(255,255,255,.04);font-weight:600;font-size:.92rem;transition:background .3s,border-color .3s,box-shadow .3s}
+.blk em{font-style:normal;font-weight:700;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.blk.changing{border-color:rgba(255,178,63,.6);background:rgba(255,178,63,.08)}
+.blk.changing em{color:var(--amber)}
+.blk.cached{border-color:rgba(62,232,255,.7);background:rgba(62,232,255,.12);box-shadow:inset 3px 0 0 var(--cyan)}
+.blk.cached em{color:var(--cyan)}
+.blk.cached em::before{content:"Cached · "}
+.notes-list{list-style:none;display:grid;gap:8px;margin-top:14px;font-size:.92rem;color:var(--ink-2)}
+.notes-list li{display:grid;grid-template-columns:18px 1fr;gap:10px;align-items:start}
+.notes-list .ic{width:18px;height:18px;color:var(--cyan);margin-top:3px}
+.callout{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;margin-top:22px;padding:18px 20px;border-radius:18px;background:linear-gradient(90deg,rgba(78,240,122,.10),rgba(255,225,77,.07));border:1px solid rgba(78,240,122,.4)}
+.callout > .ic{width:30px;height:30px;color:var(--green)}
+.callout h4{margin-bottom:4px}
+.callout p{margin:0;color:var(--ink-2);font-size:.93rem}
+.callout .big{font-family:var(--display);font-size:2.4rem;font-weight:600;line-height:1;background:linear-gradient(90deg,var(--green),var(--yellow));-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.scen{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.scen-btn{display:flex;flex-direction:column;gap:10px;text-align:start;padding:14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:#fff;font:inherit;font-size:.88rem;font-weight:600;line-height:1.35;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.scen-btn .ic{color:var(--cyan)}
+.scen-btn:hover{border-color:var(--line-2)}
+.scen-btn[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.scen-btn[aria-pressed="true"] .ic{color:var(--blue)}
+.rec{margin-top:14px;padding:18px 20px;border-radius:16px;border:1px solid rgba(62,232,255,.45);background:linear-gradient(180deg,rgba(62,232,255,.08),rgba(154,107,255,.05));animation:pop .35s var(--ease)}
+.rec h5{font-family:var(--display);font-size:1.25rem;margin-bottom:12px}
+.rec ul{list-style:none;display:grid;gap:9px}
+.rec li{display:grid;grid-template-columns:18px 1fr;gap:10px;color:var(--ink-2);font-size:.95rem}
+.rec li .ic{color:var(--green);width:18px;height:18px;margin-top:3px}
+html:not(.js) .rec + .rec{margin-top:12px}
+.facts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.fact{display:grid;grid-template-columns:18px 1fr;gap:10px;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:.9rem;color:var(--ink-2)}
+.fact .ic{color:var(--amber);width:18px;height:18px;margin-top:3px}
+
+/* Learn */
+.sub + .sub{margin-top:clamp(64px,8vw,96px)}
+.sub-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px}
+.sub-head h3{font-family:var(--display);font-size:clamp(1.5rem,2.6vw,2.1rem);margin:10px 0 8px;line-height:1.15}
+.sub-head p{margin:0;color:var(--ink-2);max-width:70ch}
+.decisions{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center;margin-bottom:16px}
+.decision{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-weight:600}
+.decision .ic{color:var(--cyan)}
+.dec-arrow{color:var(--muted)}
+.parts{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.part{display:flex;flex-direction:column;gap:10px}
+.part .pn{font-family:var(--display);font-size:2.6rem;font-weight:600;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.part h4{font-size:1.05rem;line-height:1.35}
+.part h4 a{color:#fff;text-decoration:none}
+.part h4 a:hover{text-decoration:underline}
+.part p{color:var(--ink-2);font-size:.92rem;margin:0}
+.part .more{margin-top:auto;padding-top:6px;font-size:.88rem;font-weight:600;display:inline-flex;gap:6px;align-items:center;text-decoration:none}
+.part .more .ic{width:16px;height:16px}
+.video-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:start}
+.yt{display:block;position:relative;aspect-ratio:16/9;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:radial-gradient(500px 260px at 85% 0%,rgba(255,106,213,.38),transparent 60%),radial-gradient(500px 300px at 0% 100%,rgba(62,232,255,.3),transparent 60%),linear-gradient(160deg,#130e5c,#05053a);color:#fff;text-decoration:none;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.yt:hover{color:#fff}
+.video-grid .yt{position:sticky;top:96px}
+.yt .tok{position:absolute;top:20px;inset-inline-start:22px;font-family:var(--display);font-size:clamp(1.6rem,3.2vw,2.4rem);font-weight:700;letter-spacing:-.02em;line-height:1}
+.yt .tok small{display:block;font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--eyebrow);margin-top:8px}
+.yt .yt-meta{position:absolute;inset-inline:22px;bottom:18px;display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:.88rem;color:var(--ink-2);z-index:2}
+.yt .play{width:72px;height:72px}
+.yt .play .ic{width:28px;height:28px}
+.video-copy h3{font-family:var(--display);font-size:clamp(1.4rem,2.4vw,1.85rem);margin:10px 0 12px;line-height:1.2}
+.video-copy p{color:var(--ink-2)}
+.stateless{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:6px 0 8px}
+.stateless span{padding:12px 8px;border-radius:12px;text-align:center;font-size:.8rem;font-weight:600;line-height:1.3;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+.stateless span:nth-child(1){border-color:rgba(62,232,255,.55)}
+.stateless span:nth-child(2){border-color:rgba(154,107,255,.6)}
+.stateless span:nth-child(3){border-color:rgba(255,106,213,.6)}
+.stateless span:nth-child(4){border-color:rgba(255,178,63,.6)}
+.resend{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--muted);margin-bottom:18px}
+.resend .ic{width:16px;height:16px}
+.tb{display:grid;gap:12px}
+.tb-row{display:grid;grid-template-columns:118px 1fr 64px;gap:12px;align-items:center;font-size:.86rem;color:var(--ink-2)}
+.tb-row i{display:block;height:16px;border-radius:8px;width:var(--w);background:linear-gradient(90deg,var(--pink),var(--violet));transition:width 1.1s var(--ease)}
+.tb-row.after i{background:linear-gradient(90deg,var(--teal),var(--green))}
+.tb-row b{font-variant-numeric:tabular-nums;text-align:end;color:#fff}
+.js .viz:not(.in) .tb-row i{width:0}
+.toolbox{min-height:0;margin:18px 0}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:28px;align-items:start}
+.steps{list-style:none;display:grid;margin:20px 0 24px}
+.steps li{display:grid;grid-template-columns:44px 1fr;gap:16px;padding-bottom:20px;position:relative}
+.steps li::before{content:"";position:absolute;inset-inline-start:21px;top:48px;bottom:4px;width:2px;background:linear-gradient(180deg,rgba(62,232,255,.7),rgba(62,232,255,0))}
+.steps li:last-child{padding-bottom:0}
+.steps li:last-child::before{display:none}
+.steps .sn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.07);border:1px solid var(--line-2);color:var(--cyan)}
+.steps b{display:block;margin:2px 0 2px}
+.steps span.d{color:var(--ink-2);font-size:.95rem}
+.checklist{position:sticky;top:96px}
+.checklist h4{font-size:1.15rem;margin-bottom:4px}
+.cl{list-style:none;display:grid;gap:8px;margin-top:14px}
+.cl li{position:relative}
+.cl input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.cl label{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:start;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.035);cursor:pointer;transition:background .2s,border-color .2s,color .2s;font-size:.93rem;color:var(--ink-2)}
+.cl label:hover{border-color:var(--line-2)}
+.cl .box{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line-2);display:grid;place-items:center;transition:background .2s,border-color .2s;margin-top:1px}
+.cl .box .ic{width:14px;height:14px;stroke-width:3;opacity:0;color:#05052e}
+.cl input:checked + label{border-color:rgba(78,240,122,.5);background:rgba(78,240,122,.08);color:#fff}
+.cl input:checked + label .box{background:var(--green);border-color:var(--green)}
+.cl input:checked + label .box .ic{opacity:1}
+.cl input:focus-visible + label{outline:2px solid var(--cyan);outline-offset:2px}
+.cl-progress{display:flex;align-items:center;gap:12px;margin-top:14px}
+.cl-progress .meter{flex:1;height:10px}
+.cl-progress span{font-size:.85rem;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.reading{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.reading .read{grid-column:span 2}
+.reading .read:nth-child(n+4){grid-column:span 3}
+.read{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:#fff}
+.read:hover{color:#fff}
+.read .src{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--eyebrow)}
+.read b{font-size:1.05rem;line-height:1.35}
+.read .d{color:var(--ink-2);font-size:.9rem}
+.read .go{margin-top:auto;padding-top:4px;display:inline-flex;align-items:center;gap:6px;font-size:.85rem;font-weight:600;color:#bfe9ff}
+.read .go .ic{width:16px;height:16px}
+
+/* Footer */
+.footer{position:relative;border-top:1px solid rgba(255,255,255,.08);background:#000;padding:56px 0 36px}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:32px}
+.foot-brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:1.05rem;margin-bottom:12px}
+.footer p{color:var(--ink-2);font-size:.92rem}
+.footer h4{font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;color:var(--eyebrow);margin-bottom:12px}
+.footer ul{list-style:none;display:grid;gap:8px;font-size:.92rem}
+.footer ul a{color:#dfe2fa;text-decoration:none}
+.footer ul a:hover{color:#fff;text-decoration:underline}
+.footer ul small{color:var(--muted)}
+.fine{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:.8rem;display:grid;gap:6px}
+.fine p{margin:0;color:var(--muted);font-size:.8rem}
+.to-top{position:fixed;inset-inline-end:20px;bottom:20px;z-index:40;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--btn);color:var(--btn-ink);box-shadow:0 10px 30px rgba(0,0,0,.45);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .3s,transform .3s var(--ease)}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top:hover{color:#000;background:#fff}
+
+/* Resource finder */
+.palette{position:fixed;inset:0;z-index:100;display:grid;justify-items:center;align-items:start;padding:12vh 16px 16px}
+.palette[hidden]{display:none}
+.pal-backdrop{position:absolute;inset:0;background:rgba(2,2,30,.68);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);animation:fade .2s ease}
+.pal-box{position:relative;width:min(720px,100%);max-height:74vh;display:flex;flex-direction:column;border-radius:20px;border:1px solid var(--line-2);background:linear-gradient(180deg,#15155c,#0a0a44);box-shadow:0 40px 120px rgba(0,0,0,.6);overflow:hidden;animation:pop .25s var(--ease)}
+.pal-input{display:flex;align-items:center;gap:12px;padding:16px 18px;position:relative}
+.pal-input::after{content:"";position:absolute;inset-inline:0;bottom:0;height:2px;background:var(--grad)}
+.pal-input .ic{color:var(--muted)}
+.pal-input input{flex:1;min-width:0;font:inherit;font-size:1.1rem;color:#fff;background:transparent;border:0;outline:none}
+.pal-input input::placeholder{color:#9ea3d6}
+.pal-close{background:transparent;border:0;padding:0;cursor:pointer}
+.pal-filters{display:flex;flex-wrap:wrap;gap:6px;padding:12px 18px;border-bottom:1px solid var(--line)}
+.pf{font:inherit;font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--ink-2);cursor:pointer}
+.pf:hover{color:#fff;border-color:#fff}
+.pf[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.pal-list{list-style:none;overflow:auto;padding:8px;flex:1}
+.pal-item{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;cursor:pointer;color:var(--ink-2)}
+.pal-item .pk{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);color:var(--cyan)}
+.pal-item .pk .ic{width:18px;height:18px}
+.pal-item b{display:block;color:#fff;font-weight:600;font-size:.95rem;line-height:1.3}
+.pal-item small{display:block;color:var(--muted);font-size:.8rem}
+.pal-item .kind{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.pal-item[aria-selected="true"]{background:rgba(62,232,255,.12);box-shadow:inset 0 0 0 1px rgba(62,232,255,.45)}
+.pal-empty{padding:28px;text-align:center;color:var(--muted);margin:0}
+.pal-foot{display:flex;gap:16px;flex-wrap:wrap;padding:10px 18px;border-top:1px solid var(--line);font-size:.78rem;color:var(--muted)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* Responsive */
+@media (max-width:1120px){
+  .nav a{padding:8px 10px}
+  .btn-search .lbl{display:none}
+  .docs{grid-template-columns:minmax(0,1fr)}
+  .doc-tabs{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .parts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .scen{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:920px){
+  .js .nav{display:none;position:absolute;top:64px;inset-inline:0;flex-direction:column;gap:4px;padding:12px 16px 16px;background:#000;border-bottom:1px solid var(--line-2);box-shadow:0 24px 48px rgba(0,0,0,.6);margin:0}
+  .js .nav.open{display:flex}
+  .js .nav-toggle{display:inline-flex}
+  html:not(.js) .nav{overflow-x:auto}
+  .gh .lbl{display:none}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .demo-top,.story-panel,.blog-grid,.deck-grid,.sim,.video-grid,.lab-grid{grid-template-columns:minmax(0,1fr)}
+  .story-tabs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:4px}
+  .story-tab{flex:0 0 auto;min-width:156px;scroll-snap-align:start}
+  .sessions{grid-template-columns:minmax(0,1fr)}
+  .reading{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .reading .read,.reading .read:nth-child(n+4){grid-column:auto}
+  .reading .read:last-child{grid-column:1/-1}
+  .video-grid .yt,.checklist{position:relative;top:auto}
+  .flow{grid-template-columns:minmax(0,1fr);justify-items:stretch}
+  .flow-arrow{width:2px;height:22px;justify-self:center;background:repeating-linear-gradient(180deg,var(--cyan) 0 6px,transparent 6px 10px);background-size:2px 20px;animation:flowv 1s linear infinite}
+  .flow-arrow::after{inset-inline-end:auto;inset-inline-start:-4px;top:auto;bottom:-6px;border:5px solid transparent;border-top-color:var(--cyan);border-bottom:0}
+  .hero-art{opacity:.42;width:120vw;inset-inline-end:-46vw}
+  .decisions{grid-template-columns:minmax(0,1fr)}
+  .dec-arrow{transform:rotate(90deg);justify-self:center}
+  .foot-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  .wrap{width:min(1200px,100% - 32px)}
+  .brand .sep,.brand .ev{display:none}
+  .kpis{gap:10px}
+  .kpi{padding:16px}
+  .two,.facts-grid,.reading,.parts,.scen,.doc-tabs{grid-template-columns:minmax(0,1fr)}
+  .btn{white-space:normal;text-align:center}
+  .reading .read:last-child{grid-column:auto}
+  .lc-steps{grid-template-columns:repeat(5,minmax(58px,1fr));overflow-x:auto}
+  .lc-steps::before{display:none}
+  .lc{font-size:.74rem}
+  .stateless{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .callout{grid-template-columns:auto 1fr}
+  .callout .big{grid-column:1/-1}
+  .tb-row{grid-template-columns:92px 1fr 52px}
+  .layer{grid-template-columns:minmax(0,1fr)}
+  .cmp-bars div{grid-template-columns:minmax(0,1fr)}
+  .rt-model{width:44px}
+  .rt-model i{width:34px;height:34px;font-size:.82rem}
+  .rt-model small{font-size:.62rem}
+  #router .pill small{display:none}
+  .q{max-width:100%}
+  .poster-meta .ps,.poster-meta .chips{display:none}
+  .play{width:64px;height:64px}
+  .play .ic{width:26px;height:26px}
+  .yt{aspect-ratio:auto;min-height:250px}
+  .yt .tok{font-size:1.6rem}
+  .yt .yt-meta{flex-wrap:wrap}
+  .meter-wrap{padding-bottom:26px}
+  .mark:not(.end)::after{top:auto;bottom:-24px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .lane{stroke-dashoffset:0}
+  .pulse,.play::after{display:none}
+}
+@media print{
+  :root{--ink:#000;--ink-2:#222;--muted:#555;--line:#bbb;--line-2:#999}
+  body{background:#fff;color:#000}
+  .topbar,.hero-art,.to-top,.palette,.video,.video-links,.sim-actions,.story-nav,.cta-row,.skip{display:none!important}
+  .hero,.section,.footer{background:#fff!important;color:#000!important;padding:24px 0!important}
+  .card,.viz,.widget,.kpi,.mini,.lever,.fact,.rec{background:#fff!important;border-color:#bbb!important;box-shadow:none!important;color:#000!important}
+  .js .reveal{opacity:1!important;transform:none!important}
+  [role="tabpanel"][hidden],.rec[hidden],.lc-item[hidden]{display:block!important}
+  .grad-text,.kpi b,.part .pn,.callout .big{color:#000!important;background:none!important;-webkit-text-fill-color:#000}
+  a{color:#000}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.6v12.8a1 1 0 0 0 1.53.85l10.1-6.4a1 1 0 0 0 0-1.7L9.53 4.75A1 1 0 0 0 8 5.6z" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5M18 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></symbol>
+  <symbol id="i-slides" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8M7 12l3-3 2 2 4-4"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5zM5 19.5A1.5 1.5 0 0 0 6.5 21H19"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3zM14.5 7.5l3 3"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2.5"/><path d="M16 10.5l5-3v9l-5-3"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6.5L4.8 18.2A1.9 1.9 0 0 0 6.4 21h11.2a1.9 1.9 0 0 0 1.6-2.8L14 9.5V3M7.5 15h9"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4 2.8 19.5h18.4zM12 10v4.5M12 17.2v.3"/></symbol>
+  <symbol id="i-block" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-hash" viewBox="0 0 24 24"><path d="M9.5 4 7.5 20M16.5 4l-2 16M4.5 9h16M3.5 15h16"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM18.5 15l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2.2"/><circle cx="19" cy="5" r="2.2"/><circle cx="19" cy="12" r="2.2"/><circle cx="19" cy="19" r="2.2"/><path d="M7.2 12h9.6M7 11l9.8-5M7 13l9.8 5"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 2.5 8 12 13l9.5-5zM2.5 12.5 12 17.5l9.5-5M2.5 16.5 12 21.5l9.5-5"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M3.5 17a8.5 8.5 0 1 1 17 0M12 17l4.2-5.2"/><circle cx="12" cy="17" r="1.3"/></symbol>
+  <symbol id="i-trace" viewBox="0 0 24 24"><path d="M3.5 6h8M6.5 10h10M9.5 14h7M12.5 18h8"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5 7.5-9.5V6z"/><path d="M9 12l2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M14.6 9.3c-.5-.8-1.4-1.3-2.6-1.3-1.5 0-2.6.8-2.6 1.9s1.1 1.6 2.6 2 2.6.9 2.6 2.1-1.1 2-2.6 2c-1.1 0-2.1-.5-2.6-1.3M12 6.5V8M12 16v1.5"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 2.8 20 7v10l-8 4.2L4 17V7zM4 7l8 4.2L20 7M12 11.2v10"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M15.5 19.5v-1.2a3.3 3.3 0 0 0-3.3-3.3H6.8a3.3 3.3 0 0 0-3.3 3.3v1.2M9.5 11.5a3.3 3.3 0 1 0 0-6.6 3.3 3.3 0 0 0 0 6.6zM20.5 19.5v-1.2a3.3 3.3 0 0 0-2.4-3.2M15.6 5a3.3 3.3 0 0 1 0 6.4"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-4M12 16V8M16 16v-6"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l2.5 2.5M14 9l2 2"/></symbol>
+  <symbol id="i-github" viewBox="0 0 16 16"><path fill="currentColor" stroke="none" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+</svg>
+
+<header class="topbar" id="topbar">
+  <div class="wrap bar-inner">
+    <a class="brand" href="#top" aria-label="Microsoft Ignite 2026 · FinOps on Microsoft Foundry · back to top">
+      <svg class="ms-logo" viewBox="0 0 21 21" aria-hidden="true" focusable="false"><rect width="10" height="10" fill="#f25022"/><rect x="11" width="10" height="10" fill="#7fba00"/><rect y="11" width="10" height="10" fill="#00a4ef"/><rect x="11" y="11" width="10" height="10" fill="#ffb900"/></svg>
+      <span class="ms">Microsoft</span><span class="sep" aria-hidden="true"></span><span class="ev">Ignite 2026</span>
+    </a>
+    <nav class="nav" id="site-nav" aria-label="Page sections">
+      <a href="#demo">Demo</a>
+      <a href="#blog">Blog</a>
+      <a href="#sessions">Sessions</a>
+      <a href="#deck">Deck</a>
+      <a href="#docs">Docs</a>
+      <a href="#learn">Learn</a>
+    </nav>
+    <div class="bar-actions">
+      <button class="btn btn-search js-only open-palette" type="button" aria-haspopup="dialog" aria-controls="palette"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><span class="lbl">Search resources</span><kbd>/</kbd></button>
+      <a class="btn btn-outline btn-sm gh" href="https://github.com/microsoft-foundry/ignite-2026-demos/tree/main/finops-on-microsoft-foundry" target="_blank" rel="noopener"><svg class="ic fill" aria-hidden="true"><use href="#i-github"/></svg><span class="lbl">GitHub</span></a>
+      <button class="nav-toggle js-only" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open section menu"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <svg class="hero-art" viewBox="0 0 800 640" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="neon" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="7" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <g fill="none" stroke="#5b74ff" stroke-opacity=".35" stroke-width="1.5">
+      <path d="M210 -20V330A290 290 0 0 0 500 620H840"/>
+      <path d="M186 -20V330A314 314 0 0 0 500 644H840"/>
+    </g>
+    <g fill="none" stroke-linecap="round" stroke-width="7" filter="url(#neon)">
+      <path class="lane l1" pathLength="1000" stroke="#2f6bff" d="M240 -20V330A260 260 0 0 0 500 590H840"/>
+      <path class="lane l2" pathLength="1000" stroke="#22d8a8" d="M270 -20V330A230 230 0 0 0 500 560H840"/>
+      <path class="lane l3" pathLength="1000" stroke="#9a6bff" d="M300 -20V330A200 200 0 0 0 500 530H840"/>
+      <path class="lane l4" pathLength="1000" stroke="#3ee8ff" d="M330 -20V330A170 170 0 0 0 500 500H840"/>
+      <path class="lane l5" pathLength="1000" stroke="#ff6ad5" d="M360 -20V330A140 140 0 0 0 500 470H840"/>
+      <path class="lane l6" pathLength="1000" stroke="#ffe14d" d="M390 -20V330A110 110 0 0 0 500 440H840"/>
+    </g>
+    <g fill="none" stroke="#ffffff" stroke-opacity=".7" stroke-width="1.5" stroke-linecap="round">
+      <path class="lane l1" pathLength="1000" d="M240 -20V330A260 260 0 0 0 500 590H840"/>
+      <path class="lane l2" pathLength="1000" d="M270 -20V330A230 230 0 0 0 500 560H840"/>
+      <path class="lane l3" pathLength="1000" d="M300 -20V330A200 200 0 0 0 500 530H840"/>
+      <path class="lane l4" pathLength="1000" d="M330 -20V330A170 170 0 0 0 500 500H840"/>
+      <path class="lane l5" pathLength="1000" d="M360 -20V330A140 140 0 0 0 500 470H840"/>
+      <path class="lane l6" pathLength="1000" d="M390 -20V330A110 110 0 0 0 500 440H840"/>
+    </g>
+    <g fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" filter="url(#neon)">
+      <path class="pulse p1" pathLength="1000" d="M330 -20V330A170 170 0 0 0 500 500H840"/>
+      <path class="pulse p2" pathLength="1000" d="M270 -20V330A230 230 0 0 0 500 560H840"/>
+      <path class="pulse p3" pathLength="1000" d="M360 -20V330A140 140 0 0 0 500 470H840"/>
+      <path class="pulse p4" pathLength="1000" d="M240 -20V330A260 260 0 0 0 500 590H840"/>
+    </g>
+  </svg>
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Microsoft Ignite 2026 · November 17–20 · San Francisco and online</p>
+    <h1 id="hero-title">FinOps on<br><span class="grad-text">Microsoft Foundry</span></h1>
+    <p class="lead">See your token spend, hit your quality bar for less, and set limits. The full demo, deck, docs, and Ignite sessions on managing AI cost with Microsoft Foundry, all in one place.</p>
+    <div class="cta-row">
+      <a class="btn btn-light btn-lg" href="#demo"><svg class="ic fill" aria-hidden="true"><use href="#i-play"/></svg>Watch the 7-minute demo</a>
+      <a class="btn btn-outline btn-lg" href="https://aka.ms/Ignite26/foundryfinops" target="_blank" rel="noopener">Read the blog post<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+      <button class="btn btn-ghost btn-lg js-only open-palette" type="button" aria-haspopup="dialog" aria-controls="palette"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>Find a resource<kbd>/</kbd></button>
+    </div>
+    <ul class="kpis" aria-label="Key numbers from the demo and blog post">
+      <li class="kpi k1"><b><span data-count="4">4</span>×</b><span class="t">cost per case after version 2 of the agent shipped (about 10¢ to about 40¢)</span></li>
+      <li class="kpi k2"><b>~1/10</b><span class="t">of the frontier model's cost: Model router in Cost mode matched its score</span></li>
+      <li class="kpi k3"><b>≈<span data-count="20">20</span>¢</b><span class="t">cost per case for version 3, half of version 2 at the same quality</span></li>
+      <li class="kpi k4"><b><span data-count="50">50</span>%</b><span class="t">less than global standard pricing for jobs that run on global batch</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ DEMO ============ -->
+<section class="section" id="demo" aria-labelledby="demo-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Full demo · 7 minutes</p>
+      <h2 id="demo-title">FinOps in Microsoft Foundry: full demo<a class="hash" href="#demo" aria-label="Link to the full demo section">#</a></h2>
+      <p class="lead">Kosti Vasilakakis from Microsoft Foundry follows Woodgrove, a fictional bank whose fraud desk uses an AI agent to prepare suspicious-activity cases for analysts. After version 2 of the agent ships, its cost per run climbs sharply even though analysts see no difference. The demo traces the problem the way a FinOps team would.</p>
+    </div>
+
+    <div class="demo-top">
+      <div class="reveal">
+        <div class="video" id="video-stage">
+          <button class="video-poster" id="video-play" type="button" aria-label="Play the FinOps in Microsoft Foundry full demo video">
+            <svg class="art" viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="lane-gy" x1="0" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3ee8ff"/><stop offset=".55" stop-color="#4ef07a"/><stop offset="1" stop-color="#ffe14d"/></linearGradient>
+                <filter id="neon2" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              </defs>
+              <g fill="none" stroke="#5b74ff" stroke-opacity=".25" stroke-width="1">
+                <path d="M0 90H800M0 180H800M0 270H800M0 360H800M160 0V450M320 0V450M480 0V450M640 0V450"/>
+              </g>
+              <g fill="none" stroke-linecap="round" stroke-width="6" filter="url(#neon2)">
+                <path d="M-20 200H560A50 50 0 0 0 610 150V-20" stroke="url(#lane-gy)"/>
+                <path d="M-20 222H560A72 72 0 0 0 632 150V-20" stroke="url(#lane-gy)" opacity=".85"/>
+                <path d="M-20 244H560A94 94 0 0 0 654 150V-20" stroke="#4ef07a" opacity=".7"/>
+                <path d="M-20 266H560A116 116 0 0 0 676 150V-20" stroke="#ff6ad5"/>
+                <path d="M-20 288H560A138 138 0 0 0 698 150V-20" stroke="#9a6bff"/>
+                <path d="M742 -20V470" stroke="#ff6ad5" stroke-width="10" opacity=".85"/>
+                <path d="M768 -20V470" stroke="#ffb23f" stroke-width="7" opacity=".85"/>
+              </g>
+              <g fill="none" stroke="#ffffff" stroke-opacity=".55" stroke-width="1.3">
+                <path d="M-20 200H560A50 50 0 0 0 610 150V-20"/>
+                <path d="M-20 222H560A72 72 0 0 0 632 150V-20"/>
+                <path d="M-20 266H560A116 116 0 0 0 676 150V-20"/>
+              </g>
+            </svg>
+            <span class="center"><span class="play"><svg class="ic fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
+            <span class="poster-meta">
+              <span class="chips"><span class="chip">Full demo</span><span class="chip">7 min</span><span class="chip">4K</span></span>
+              <span class="pt">FinOps in Microsoft Foundry</span>
+              <span class="ps">Woodgrove Bank's fraud-review agent, from cost spike to cost control</span>
+            </span>
+          </button>
+        </div>
+        <p class="video-fallback" id="video-fallback" hidden>The video couldn't load here. Watch it on GitHub or download the MP4 instead.</p>
+        <div class="video-links">
+          <a class="btn btn-ghost btn-sm" href="https://github.com/microsoft-foundry/ignite-2026-demos/tree/main/finops-on-microsoft-foundry#finops-in-microsoft-foundry-full-demo" target="_blank" rel="noopener"><svg class="ic fill" aria-hidden="true"><use href="#i-github"/></svg>Watch on GitHub</a>
+          <a class="btn btn-ghost btn-sm" href="https://github.com/microsoft-foundry/ignite-2026-demos/raw/main/finops-on-microsoft-foundry/FinOps%20in%20Microsoft%20Foundry%20Full%20Demo.mp4" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Download the video (MP4, 4K, 341 MB)</a>
+        </div>
+      </div>
+      <aside class="card demo-side reveal" aria-labelledby="demo-side-title">
+        <h3 id="demo-side-title">What you'll see</h3>
+        <ul class="facts">
+          <li><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg><span>The <b>Fleet overview</b> and <b>Cost view</b> show which project, agent, and model are driving spend.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-trace"/></svg><span><b>Traces</b> reveal every step running on the largest model, and a date stamp that prevents prompt caching.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg><span><b>Insights</b> scans the traces automatically and flags the policy text resent on every call.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-route"/></svg><span>An evaluation shows <b>Model Router</b> in cost mode matching quality at about a tenth of the price, and <b>Agent Optimizer</b> recommends a smaller model with shorter instructions.</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg><span><b>Cost controls</b> set dollar or token budgets, down to a single conversation.</span></li>
+        </ul>
+      </aside>
+    </div>
+
+    <div class="story reveal" id="story">
+      <div class="story-head">
+        <div>
+          <p class="eyebrow">Follow the story</p>
+          <h3>From cost spike to cost control in five steps</h3>
+        </div>
+        <div class="story-nav js-only">
+          <button class="icon-btn" id="story-prev" type="button" aria-label="Previous step" disabled><svg class="ic" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+          <span class="story-count" id="story-count" aria-live="polite">1 / 5</span>
+          <button class="icon-btn" id="story-next" type="button" aria-label="Next step"><svg class="ic" aria-hidden="true"><use href="#i-chev"/></svg></button>
+        </div>
+      </div>
+      <div class="story-tabs" role="tablist" aria-label="Demo story steps" id="story-tabs">
+        <button class="story-tab" role="tab" id="st-1" aria-controls="sp-1" aria-selected="true" type="button"><span class="n">01</span><span class="t">Spot the spike</span></button>
+        <button class="story-tab" role="tab" id="st-2" aria-controls="sp-2" aria-selected="false" type="button"><span class="n">02</span><span class="t">Find the source</span></button>
+        <button class="story-tab" role="tab" id="st-3" aria-controls="sp-3" aria-selected="false" type="button"><span class="n">03</span><span class="t">Read the traces</span></button>
+        <button class="story-tab" role="tab" id="st-4" aria-controls="sp-4" aria-selected="false" type="button"><span class="n">04</span><span class="t">Fix it for less</span></button>
+        <button class="story-tab" role="tab" id="st-5" aria-controls="sp-5" aria-selected="false" type="button"><span class="n">05</span><span class="t">Set guardrails</span></button>
+      </div>
+      <div class="card">
+        <div class="story-panel" role="tabpanel" id="sp-1" aria-labelledby="st-1" tabindex="0">
+          <div>
+            <span class="chip chip-hot">Version 2 ships</span>
+            <h4>Cost per run climbs. Quality doesn't.</h4>
+            <p>After version 2 of the fraud-review agent ships, its cost per run climbs sharply even though analysts see no difference.</p>
+            <p class="tiny muted">The companion blog post puts the jump at about 10 cents to about 40 cents per case.</p>
+          </div>
+          <div class="viz" role="img" aria-label="Cost per case: about 10 cents for version 1 and about 40 cents for version 2">
+            <div class="viz-head"><span class="chip">Cost per case</span><span class="tiny muted">Approximate, from the blog post</span></div>
+            <div class="bars">
+              <div class="bar v1"><span class="track"><b>≈10¢</b><i style="--h:25%"></i></span><small>v1</small></div>
+              <div class="bar v2"><span class="track"><b>≈40¢</b><i style="--h:100%"></i></span><small>v2</small></div>
+            </div>
+            <p class="viz-foot"><span class="chip chip-hot">4× per case</span><span class="tiny muted">Analysts see no difference</span></p>
+          </div>
+        </div>
+        <div class="story-panel" role="tabpanel" id="sp-2" aria-labelledby="st-2" tabindex="0">
+          <div>
+            <span class="chip">Fleet overview · Cost view</span>
+            <h4>Trace spend to a project, an agent, and a model</h4>
+            <p>The demo works the problem the way a FinOps team would: the Fleet overview and Cost view show which project, agent, and model are driving spend.</p>
+          </div>
+          <div class="viz" role="img" aria-label="Illustration: drilling down from project to agent to model to find the spend">
+            <div class="viz-head"><span class="chip">Where is the spend?</span><span class="tiny muted">Illustrative</span></div>
+            <div class="drill">
+              <div class="drill-row"><span class="drill-l">Project</span><div class="drill-bar"><i class="hot" style="--w:64%">Fraud desk</i><i style="--w:36%"></i></div></div>
+              <div class="drill-row"><span class="drill-l">Agent</span><div class="drill-bar"><i class="hot" style="--w:76%">Fraud-review agent v2</i><i style="--w:24%"></i></div></div>
+              <div class="drill-row"><span class="drill-l">Model</span><div class="drill-bar"><i class="hot" style="--w:88%">Largest model</i><i style="--w:12%"></i></div></div>
+            </div>
+            <p class="drill-note"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>Project, then agent, then model</p>
+          </div>
+        </div>
+        <div class="story-panel" role="tabpanel" id="sp-3" aria-labelledby="st-3" tabindex="0">
+          <div>
+            <span class="chip">Traces · Insights</span>
+            <h4>Two hidden cost drivers</h4>
+            <p>The agent's traces reveal that every step runs on the largest model, and that a date stamp at the top of each prompt prevents prompt caching.</p>
+            <p>Insights scans the traces automatically and flags the policy text that gets resent on every call.</p>
+          </div>
+          <div class="viz" role="img" aria-label="Illustration: a trace where every step uses the largest model and each prompt starts with a date stamp">
+            <div class="viz-head"><span class="chip">Agent trace</span><span class="tiny muted">Illustrative</span></div>
+            <ol class="trace-steps">
+              <li><span>Step 1</span><i style="--w:72%"></i><em class="tag">Largest model</em></li>
+              <li><span>Step 2</span><i style="--w:94%"></i><em class="tag">Largest model</em></li>
+              <li><span>Step 3</span><i style="--w:60%"></i><em class="tag">Largest model</em></li>
+              <li><span>Step 4</span><i style="--w:82%"></i><em class="tag">Largest model</em></li>
+            </ol>
+            <div class="prompt-mini"><span class="pm changing">Date stamp</span><span class="pm">Instructions</span><span class="pm flagged">Policy text</span><span class="pm changing">Case data</span></div>
+            <div class="viz-notes">
+              <span><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>The date stamp changes the start of every prompt, so the cache never gets a hit.</span>
+              <span><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg>Insights flags the policy text resent on every call.</span>
+            </div>
+          </div>
+        </div>
+        <div class="story-panel" role="tabpanel" id="sp-4" aria-labelledby="st-4" tabindex="0">
+          <div>
+            <span class="chip chip-ok">Evaluate · Optimize</span>
+            <h4>Hit the quality bar for a fraction of the cost</h4>
+            <p>An evaluation over closed cases shows Model Router in cost mode matching the largest model's quality at about a tenth of the price.</p>
+            <p>Agent Optimizer then tests combinations of models and instructions and recommends a smaller model with shorter instructions. Version 3 brings cost per run back down with no change in review quality.</p>
+          </div>
+          <div class="viz" role="img" aria-label="Illustration: the same quality score at about one tenth of the cost">
+            <div class="viz-head"><span class="chip">Evaluation over closed cases</span><span class="tiny muted">Illustrative scale</span></div>
+            <div class="cmp">
+              <div class="cmp-row"><span>Quality</span><div class="cmp-bars"><div><i style="--w:90%"></i><small>Largest model</small></div><div><i class="ok" style="--w:90%"></i><small>Model Router, cost mode</small></div></div></div>
+              <div class="cmp-row"><span>Cost</span><div class="cmp-bars"><div><i style="--w:100%"></i><small>Largest model</small></div><div><i class="ok" style="--w:10%"></i><small>About 1/10 the price</small></div></div></div>
+            </div>
+            <div class="v3-note"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span><b>Version 3:</b> a smaller model with shorter instructions. The blog post puts it at about 20¢ per case, at the same quality.</span></div>
+          </div>
+        </div>
+        <div class="story-panel" role="tabpanel" id="sp-5" aria-labelledby="st-5" tabindex="0">
+          <div>
+            <span class="chip">Cost controls</span>
+            <h4>Budgets that alert, then block</h4>
+            <p>Cost controls set dollar or token budgets on a resource, project, model, agent, or single conversation.</p>
+            <p>The demo creates a per-conversation token budget with an alert at 80% and a block at 100%, then shows a conversation stopped by an error that names the control that blocked it.</p>
+            <a class="btn btn-light btn-sm" href="#simulator">Try it below<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+          </div>
+          <div class="viz" role="img" aria-label="Illustration: budget scopes, and a budget meter with an alert at 80 percent and a block at 100 percent">
+            <div class="viz-head"><span class="chip">Budget scope</span><span class="tiny muted">As shown in the demo</span></div>
+            <div class="scopes"><span>Resource</span><span>Project</span><span>Model</span><span>Agent</span><span class="on">Conversation</span></div>
+            <div class="meter-wrap"><div class="meter is-alert"><div class="fill" style="--w:84%"></div><span class="mark" style="--x:80%" data-l="Alert · 80%"></span><span class="mark end" style="--x:100%" data-l="Block · 100%"></span></div></div>
+            <p class="scope-note">Dollar or token budgets</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card sim reveal" id="simulator">
+      <div>
+        <p class="eyebrow">Try it · Illustrative</p>
+        <h3>A per-conversation token budget</h3>
+        <p>Every turn resends the system prompt, tool definitions, and the growing conversation history, so each turn costs more than the last. Keep sending turns and watch the cost control step in.</p>
+        <dl class="sim-stats">
+          <div><dt>Budget</dt><dd>20,000 tokens</dd></div>
+          <div><dt>Alert</dt><dd>80%</dd></div>
+          <div><dt>Block</dt><dd>100%</dd></div>
+        </dl>
+        <div class="sim-actions">
+          <button class="btn btn-light" id="sim-send" type="button"><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>Send next turn</button>
+          <button class="btn btn-ghost" id="sim-reset" type="button">Reset</button>
+        </div>
+        <p class="tiny muted">Sample numbers for illustration only. They aren't product defaults, limits, or prices.</p>
+      </div>
+      <div>
+        <div class="sim-readout"><span><b id="sim-used">0</b> / 20,000 tokens</span><span class="pct" id="sim-pct">0%</span></div>
+        <div class="meter-wrap">
+          <div class="meter" id="sim-meter" role="progressbar" aria-label="Share of the token budget used" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="fill" id="sim-fill" style="width:0%"></div><span class="mark" style="--x:80%" data-l="Alert · 80%"></span><span class="mark end" style="--x:100%" data-l="Block · 100%"></span></div>
+        </div>
+        <div class="sim-status" id="sim-status" role="status" aria-live="polite"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg><div><b>Budget active</b><span>Send the first turn to start the conversation.</span></div></div>
+        <ol class="log" id="sim-log" aria-label="Conversation turns, newest first"></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BLOG ============ -->
+<section class="section tint" id="blog" aria-labelledby="blog-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Microsoft Foundry Blog</p>
+      <h2 id="blog-title">See your token spend, hit your quality bar for less, and set limits<a class="hash" href="#blog" aria-label="Link to the blog section">#</a></h2>
+      <p class="lead">Kosti Vasilakakis, Avinav Jami, and Bhuwan Sahni walk through FinOps for AI end to end, with the same fictional Woodgrove Bank fraud-review agent shown in the demo.</p>
+    </div>
+    <div class="blog-grid">
+      <div class="card reveal">
+        <div class="pills" role="tablist" aria-label="Blog post themes">
+          <button class="pill" role="tab" id="bt-1" aria-controls="bp-1" aria-selected="true" type="button">See your spend</button>
+          <button class="pill" role="tab" id="bt-2" aria-controls="bp-2" aria-selected="false" type="button">Hit the bar for less</button>
+          <button class="pill" role="tab" id="bt-3" aria-controls="bp-3" aria-selected="false" type="button">Set limits</button>
+        </div>
+        <div class="tabpanel" role="tabpanel" id="bp-1" aria-labelledby="bt-1" tabindex="0">
+          <ul class="ticks">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-coin"/></svg><span>When version 2 of the agent <b>quadruples the cost per case</b>, from about 10 cents to about 40, the team uses <b>Fleet, Operations, and Cost (preview)</b> to find the project, agent, and model behind the spend.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-trace"/></svg><span>A trace shows <b>every step running on the frontier model</b>, and a <b>timestamp at the top of the prompt</b> that stops prompt caching from ever getting a hit.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg><span><b>Insights (preview)</b> flags the full fraud policy being resent at every step.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg><span>Foundry's cost figures come from <b>Azure Cost Management</b>, so engineering and finance see the same numbers. The post also explains why cost shows up hours after usage.</span></li>
+          </ul>
+        </div>
+        <div class="tabpanel" role="tabpanel" id="bp-2" aria-labelledby="bt-2" tabindex="0">
+          <ul class="ticks">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>The team first sets a quality bar with an <b>evaluation over 50 closed cases</b>.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-route"/></svg><span><b>Model router in Cost mode</b> matches the frontier model's score for about a tenth of the cost.</span></li>
+          </ul>
+          <p class="sub-label">Four levers the post works through</p>
+          <div class="levers">
+            <div class="lever"><span class="num">1</span><div><b>The right model for each step</b></div></div>
+            <div class="lever"><span class="num">2</span><div><b>Prompt caching</b></div></div>
+            <div class="lever"><span class="num">3</span><div><b>Sending fewer tokens</b></div></div>
+            <div class="lever"><span class="num">4</span><div><b>The right deployment type</b><span class="s">Batch, Flex, or provisioned throughput</span></div></div>
+          </div>
+          <ul class="ticks">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg><span><b>Agent Optimizer (preview)</b> tunes the system prompt along the way, and <b>version 3 halves the cost per case</b> to about 20 cents at the same quality.</span></li>
+          </ul>
+        </div>
+        <div class="tabpanel" role="tabpanel" id="bp-3" aria-labelledby="bt-3" tabindex="0">
+          <ul class="ticks">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg><span><b>Cost controls (preview)</b> are dollar or token budgets on a project, deployment, agent, or hosted agent session.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>Each control <b>alerts at a threshold</b> or <b>blocks new requests</b>.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg><span>The post also covers customer results from <b>Docusign</b> and <b>Enhans</b>.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-flag"/></svg><span>What's next: <b>caller attribution (private preview)</b>, and bringing Foundry cost data into <b>Agent 365</b>.</span></li>
+          </ul>
+        </div>
+      </div>
+      <aside class="card aside reveal" aria-labelledby="blog-aside-title">
+        <h3 id="blog-aside-title">Cost per case, by agent version</h3>
+        <div class="viz" role="img" aria-label="Cost per case: about 10 cents for version 1, about 40 cents for version 2, about 20 cents for version 3">
+          <div class="bars">
+            <div class="bar v1"><span class="track"><b>≈10¢</b><i style="--h:25%"></i></span><small>v1</small></div>
+            <div class="bar v2"><span class="track"><b>≈40¢</b><i style="--h:100%"></i></span><small>v2</small></div>
+            <div class="bar v3"><span class="track"><b>≈20¢</b><i style="--h:50%"></i></span><small>v3</small></div>
+          </div>
+        </div>
+        <p class="tiny muted">Approximate figures quoted in the blog post. Version 3 keeps the same quality as version 2.</p>
+        <ul class="aside-list">
+          <li><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><span>By Kosti Vasilakakis, Avinav Jami, and Bhuwan Sahni</span></li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg><span>Uses the same Woodgrove scenario as the demo video</span></li>
+        </ul>
+        <a class="btn btn-light" href="https://aka.ms/Ignite26/foundryfinops" target="_blank" rel="noopener">Read the blog post<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SESSIONS ============ -->
+<section class="section" id="sessions" aria-labelledby="sessions-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Ignite 2026 sessions</p>
+      <h2 id="sessions-title">Sessions on cost and Microsoft Foundry<a class="hash" href="#sessions" aria-label="Link to the sessions section">#</a></h2>
+      <p class="lead">Ignite runs November 17–20, 2026, in San Francisco and online. These sessions cover cost on Microsoft Foundry. After the event, check each session page for the recording.</p>
+    </div>
+    <div class="toolbar reveal">
+      <div class="pills js-only" role="group" aria-label="Filter sessions by format">
+        <button class="pill" type="button" data-format="all" aria-pressed="true">All</button>
+        <button class="pill" type="button" data-format="breakout" aria-pressed="false">Breakouts</button>
+        <button class="pill" type="button" data-format="lightning" aria-pressed="false">Lightning talks</button>
+      </div>
+      <div class="search-field js-only">
+        <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+        <label class="sr-only" for="session-q">Filter sessions by keyword</label>
+        <input id="session-q" type="search" placeholder="Filter by keyword, e.g. router" autocomplete="off">
+      </div>
+      <p class="count js-only" id="session-count" aria-live="polite">Showing 6 of 6 sessions</p>
+    </div>
+    <div class="sessions" id="session-list">
+      <article class="card session hoverable reveal" data-format="breakout">
+        <div class="chips"><span class="chip">Breakout</span><span class="chip chip-code">BRK308</span></div>
+        <h3><a href="https://ignite.microsoft.com/en-US/sessions/BRK308" target="_blank" rel="noopener">How Microsoft IQ shapes the cost of enterprise AI</a></h3>
+        <p>How Work IQ, Foundry IQ, Fabric IQ, and Web IQ create different cost patterns, with a live cost-estimation demo.</p>
+        <div class="meta"><span><svg class="ic" aria-hidden="true"><use href="#i-mic"/></svg>Breakout session</span><span><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg>Recording on the session page after the event</span></div>
+        <div class="actions"><a class="btn btn-light btn-sm" href="https://ignite.microsoft.com/en-US/sessions/BRK308" target="_blank" rel="noopener">View session<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+      </article>
+      <article class="card session hoverable reveal" data-format="breakout">
+        <div class="chips"><span class="chip">Breakout</span><span class="chip chip-code">BRK280</span></div>
+        <h3><a href="https://ignite.microsoft.com/en-US/sessions/BRK280" target="_blank" rel="noopener">Designing an agent harness that orchestrates models</a></h3>
+        <p>Routing tasks to different models to balance quality, latency, cost, and control.</p>
+        <div class="meta"><span><svg class="ic" aria-hidden="true"><use href="#i-mic"/></svg>Breakout session</span><span><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg>Recording on the session page after the event</span></div>
+        <div class="actions"><a class="btn btn-light btn-sm" href="https://ignite.microsoft.com/en-US/sessions/BRK280" target="_blank" rel="noopener">View session<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+      </article>
+      <article class="card session hoverable reveal" data-format="breakout">
+        <div class="chips"><span class="chip">Breakout</span><span class="chip chip-code">BRK249</span></div>
+        <h3><a href="https://ignite.microsoft.com/en-US/sessions/BRK249" target="_blank" rel="noopener">From traces to better agents: The Foundry improvement loop</a></h3>
+        <p>Using traces, evaluations, and optimization in Foundry to improve agent quality and manage cost.</p>
+        <div class="meta"><span><svg class="ic" aria-hidden="true"><use href="#i-mic"/></svg>Breakout session</span><span><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg>Recording on the session page after the event</span></div>
+        <div class="actions"><a class="btn btn-light btn-sm" href="https://ignite.microsoft.com/en-US/sessions/BRK249" target="_blank" rel="noopener">View session<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+      </article>
+      <article class="card session hoverable reveal" data-format="breakout">
+        <div class="chips"><span class="chip">Breakout</span><span class="chip chip-code">BRK482</span></div>
+        <h3><a href="https://ignite.microsoft.com/en-US/sessions/BRK482" target="_blank" rel="noopener">FinOps for AI: Partner Playbook for Building AI Solutions and Services</a></h3>
+        <p>A FinOps approach for partners to anticipate costs, optimize token use, and build profitable AI services.</p>
+        <div class="meta"><span><svg class="ic" aria-hidden="true"><use href="#i-mic"/></svg>Breakout session</span><span><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg>Recording on the session page after the event</span></div>
+        <div class="actions"><a class="btn btn-light btn-sm" href="https://ignite.microsoft.com/en-US/sessions/BRK482" target="_blank" rel="noopener">View session<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+      </article>
+      <article class="card session hoverable reveal" data-format="lightning">
+        <div class="chips"><span class="chip">Lightning talk</span><span class="chip chip-code">LTG1201</span></div>
+        <h3><a href="https://ignite.microsoft.com/en-US/sessions/LTG1201" target="_blank" rel="noopener">Optimizing AI decisions with the model router in Foundry Models</a></h3>
+        <p>Using model router to choose models per request.</p>
+        <div class="meta"><span><svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg>Lightning talk</span><span><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg>Recording on the session page after the event</span></div>
+        <div class="actions"><a class="btn btn-light btn-sm" href="https://ignite.microsoft.com/en-US/sessions/LTG1201" target="_blank" rel="noopener">View session<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+      </article>
+      <article class="card session hoverable reveal" data-format="lightning">
+        <div class="chips"><span class="chip">Lightning talk</span><span class="chip chip-code">LTG1206</span></div>
+        <h3><a href="https://ignite.microsoft.com/en-US/sessions/LTG1206" target="_blank" rel="noopener">Agent FinOps: Designing agents that scale responsibly</a></h3>
+        <p>Designing agents with cost in mind.</p>
+        <div class="meta"><span><svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg>Lightning talk</span><span><svg class="ic" aria-hidden="true"><use href="#i-video"/></svg>Recording on the session page after the event</span></div>
+        <div class="actions"><a class="btn btn-light btn-sm" href="https://ignite.microsoft.com/en-US/sessions/LTG1206" target="_blank" rel="noopener">View session<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+      </article>
+    </div>
+    <p class="empty" id="session-empty" hidden>No sessions match that filter. Try another keyword.</p>
+    <div class="card guide reveal">
+      <p>For <b>every FinOps session at Ignite</b>, including Copilot and GitHub sessions, see the Tech Community guide.</p>
+      <a class="btn btn-outline" href="https://techcommunity.microsoft.com/blog/finopsblog/your-guide-to-finops-for-ai-at-microsoft-ignite-2026/4569117" target="_blank" rel="noopener">Your guide to FinOps for AI at Microsoft Ignite 2026<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DECK ============ -->
+<section class="section tint" id="deck" aria-labelledby="deck-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Presentation · 27 slides · PDF</p>
+      <h2 id="deck-title">FinOps for AI: Plan, manage, and optimize AI value with Microsoft Azure and GitHub<a class="hash" href="#deck" aria-label="Link to the deck section">#</a></h2>
+      <p class="lead">This deck covers FinOps for AI across Microsoft Azure and GitHub, organized around three disciplines: planning, spend management, and optimization.</p>
+      <div class="deck-cta">
+        <a class="btn btn-light" href="https://github.com/microsoft-foundry/ignite-2026-demos/blob/main/finops-on-microsoft-foundry/FinOps%20for%20AI%20Azure%20and%20GitHub.PDF" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-slides"/></svg>View the deck</a>
+        <a class="btn btn-ghost" href="https://github.com/microsoft-foundry/ignite-2026-demos/raw/main/finops-on-microsoft-foundry/FinOps%20for%20AI%20Azure%20and%20GitHub.PDF" target="_blank" rel="noopener"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Download the PDF</a>
+      </div>
+    </div>
+    <div class="deck-grid">
+      <div class="card reveal">
+        <h3>It opens with the questions customers ask most</h3>
+        <div class="qs">
+          <p class="q">“What are we actually spending on tokens?”</p>
+          <p class="q-mid">… through to …</p>
+          <p class="q b">“How do we measure ROI?”</p>
+        </div>
+        <h3>Then maps Microsoft products to each layer of the problem</h3>
+        <div class="layers">
+          <div class="layer"><b>Context</b><div class="chips"><span class="chip">Microsoft IQ</span></div></div>
+          <div class="layer l-cost"><b>Cost control</b><div class="chips"><span class="chip">API Management</span><span class="chip">Agent 365</span><span class="chip">Azure Cost Management</span><span class="chip">Foundry</span></div></div>
+          <div class="layer l-proc"><b>Procurement</b><div class="chips"><span class="chip">Provisioned throughput</span><span class="chip">Prepurchase plans</span></div></div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <div class="pills" role="tablist" aria-label="Deck disciplines">
+          <button class="pill" role="tab" id="dk-1" aria-controls="dkp-1" aria-selected="true" type="button">01 · Plan</button>
+          <button class="pill" role="tab" id="dk-2" aria-controls="dkp-2" aria-selected="false" type="button">02 · Manage spend</button>
+          <button class="pill" role="tab" id="dk-3" aria-controls="dkp-3" aria-selected="false" type="button">03 · Optimize</button>
+        </div>
+        <div class="tabpanel" role="tabpanel" id="dkp-1" aria-labelledby="dk-1" tabindex="0">
+          <ol class="disc-steps">
+            <li><div><b>Estimate business value</b><span>Start from the value the solution should deliver.</span></div></li>
+            <li><div><b>Price the full solution</b><span>Use the Azure pricing calculator to cover all of it:</span><div class="chips"><span class="chip">Tokens</span><span class="chip">Supporting infrastructure</span><span class="chip">Human oversight</span></div></div></li>
+            <li><div><b>Project a baseline ROI</b><span>The baseline you'll compare actual results against later.</span></div></li>
+          </ol>
+        </div>
+        <div class="tabpanel" role="tabpanel" id="dkp-2" aria-labelledby="dk-2" tabindex="0">
+          <ol class="disc-steps">
+            <li><div><b>Token visibility</b><span>In GitHub Enterprise and API Management.</span></div></li>
+            <li><div><b>Token caps and chargeback</b><span>Limit usage and allocate it back to the teams that drive it.</span></div></li>
+            <li><div><b>Azure Cost Management</b><span>Track and analyze actual spend.</span></div></li>
+            <li><div><b>Compare actual ROI against the baseline</b><span>Close the loop on the plan.</span></div></li>
+          </ol>
+        </div>
+        <div class="tabpanel" role="tabpanel" id="dkp-3" aria-labelledby="dk-3" tabindex="0">
+          <ol class="disc-steps">
+            <li><div><b>Four runtime levers</b><div class="chips"><span class="chip">Right model</span><span class="chip">Right context</span><span class="chip">Caching</span><span class="chip">Right execution</span></div></div></li>
+            <li><div><b>In Foundry</b><span>Model Router, Microsoft IQ, prompt, semantic, and tool-result caching, and Agent Optimizer (preview).</span></div></li>
+            <li><div><b>In GitHub Copilot</b><span>Multi-model routing.</span></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOCS ============ -->
+<section class="section" id="docs" aria-labelledby="docs-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Documentation</p>
+      <h2 id="docs-title">From estimate to commitment<a class="hash" href="#docs" aria-label="Link to the documentation section">#</a></h2>
+      <p class="lead">Four guides that put the demo into practice: plan and reconcile costs, attribute and cap model spend, lower the cost of each request, and commit to capacity.</p>
+    </div>
+    <div class="docs reveal">
+      <div class="doc-tabs" role="tablist" aria-orientation="vertical" aria-label="Documentation guides">
+        <button class="doc-tab" role="tab" id="dt-1" aria-controls="dp-1" aria-selected="true" type="button"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg></span><span><b>Plan and manage costs</b><small>Microsoft Foundry</small></span></button>
+        <button class="doc-tab" role="tab" id="dt-2" aria-controls="dp-2" aria-selected="false" type="button"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-key"/></svg></span><span><b>Attribute and cap model spend</b><small>Azure AI Gateway</small></span></button>
+        <button class="doc-tab" role="tab" id="dt-3" aria-controls="dp-3" aria-selected="false" type="button"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-route"/></svg></span><span><b>Lower the cost of each request</b><small>Model router · caching · batch</small></span></button>
+        <button class="doc-tab" role="tab" id="dt-4" aria-controls="dp-4" aria-selected="false" type="button"><span class="ico"><svg class="ic" aria-hidden="true"><use href="#i-cube"/></svg></span><span><b>Commit to capacity</b><small>PTUs · reservations · prepurchase</small></span></button>
+      </div>
+      <div class="card">
+        <!-- Doc 1 -->
+        <div class="doc-panel" role="tabpanel" id="dp-1" aria-labelledby="dt-1" tabindex="0">
+          <span class="chip">Microsoft Learn</span>
+          <h3><a href="https://learn.microsoft.com/en-us/azure/foundry/concepts/manage-costs" target="_blank" rel="noopener">Plan and manage costs for Microsoft Foundry</a></h3>
+          <p>Foundry is made up of several optional Azure services, so there's no single line item in the Azure pricing calculator. This guide shows how to estimate costs for the services in your architecture, validate the estimates, and reconcile them before rolling out to production.</p>
+          <div class="widget">
+            <div class="widget-head"><h4>The cost lifecycle in the guide</h4><span class="tiny muted js-only">Select a step</span></div>
+            <ol class="lc-steps">
+              <li><button class="lc" type="button" data-i="0" aria-pressed="true" aria-controls="lc-detail"><span class="dot">1</span>Estimate</button></li>
+              <li><button class="lc" type="button" data-i="1" aria-pressed="false" aria-controls="lc-detail"><span class="dot">2</span>Validate</button></li>
+              <li><button class="lc" type="button" data-i="2" aria-pressed="false" aria-controls="lc-detail"><span class="dot">3</span>Reconcile</button></li>
+              <li><button class="lc" type="button" data-i="3" aria-pressed="false" aria-controls="lc-detail"><span class="dot">4</span>Monitor</button></li>
+              <li><button class="lc" type="button" data-i="4" aria-pressed="false" aria-controls="lc-detail"><span class="dot">5</span>Allocate</button></li>
+            </ol>
+            <div class="lc-detail" id="lc-detail" aria-live="polite">
+              <div class="lc-item" data-i="0"><h5>1 · Estimate</h5><p>Estimate costs for each of the services in your architecture, since Foundry has no single line item in the Azure pricing calculator.</p></div>
+              <div class="lc-item" data-i="1"><h5>2 · Validate</h5><p>Validate those estimates with a small test workload.</p></div>
+              <div class="lc-item" data-i="2"><h5>3 · Reconcile</h5><p>Reconcile the estimates against actual meter-level charges in Microsoft Cost Management before rolling out to production.</p></div>
+              <div class="lc-item" data-i="3"><h5>4 · Monitor</h5><p>Once you're running, monitor spend in the Foundry portal, where you can see estimated costs for agents and model deployments by project and date range.</p></div>
+              <div class="lc-item" data-i="4"><h5>5 · Allocate and control</h5><p>In Cost Management in the Azure portal, break down costs by resource and meter, allocate shared spend back to teams with project-level chargeback (preview), set up budgets and alerts, and export cost data for analysis in tools like Excel or Power BI.</p></div>
+            </div>
+          </div>
+          <div class="billing">
+            <p class="sub-label">How Foundry is billed</p>
+            <div class="chips"><span class="chip">Pay-as-you-go</span><span class="chip">Commitment tiers</span><span class="chip">Token-based pricing for models</span><span class="chip">Fine-tuned models: training, hosting, and inference charges</span></div>
+          </div>
+          <div class="link-row"><a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/concepts/manage-costs" target="_blank" rel="noopener">Plan and manage costs for Microsoft Foundry<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+        </div>
+
+        <!-- Doc 2 -->
+        <div class="doc-panel" role="tabpanel" id="dp-2" aria-labelledby="dt-2" tabindex="0">
+          <span class="chip">Azure AI Gateway</span>
+          <h3><a href="https://ai.gateway.azure.com/docs/finops" target="_blank" rel="noopener">Attribute and cap model spend</a></h3>
+          <p>Azure AI Gateway turns token usage into estimated USD cost and emits it as OpenTelemetry metrics you can send to Application Insights or your own dashboards.</p>
+          <div class="widget">
+            <div class="flow" role="img" aria-label="Token usage becomes estimated USD cost, then OpenTelemetry metrics, then Application Insights or your own dashboards">
+              <div class="node"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg>Token usage</div><span class="flow-arrow" aria-hidden="true"></span>
+              <div class="node"><svg class="ic" aria-hidden="true"><use href="#i-coin"/></svg>Estimated USD cost</div><span class="flow-arrow" aria-hidden="true"></span>
+              <div class="node"><svg class="ic" aria-hidden="true"><use href="#i-trace"/></svg>OpenTelemetry metrics</div><span class="flow-arrow" aria-hidden="true"></span>
+              <div class="node"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg>Application Insights or your dashboards</div>
+            </div>
+          </div>
+          <div class="two">
+            <div class="mini"><h4><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Attribute</h4><p>Give each application its own API key, or add validated Microsoft Entra claims as metric dimensions, to see exactly which applications, callers, and cost centers are driving model spend.</p></div>
+            <div class="mini"><h4><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Cap</h4><p>Cost-limit policies give each API key or Entra identity its own estimated USD allowance that renews on a set period, such as weekly or monthly, with overrides to raise or lower the limit for specific callers.</p></div>
+          </div>
+          <div class="note"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>These are estimates based on a Microsoft-maintained pricing catalog, not billing records. The docs also cover how costs are calculated and how to spot models with missing prices.</span></div>
+          <div class="link-row"><a class="link-chip" href="https://ai.gateway.azure.com/docs/finops" target="_blank" rel="noopener">Attribute and cap model spend<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+        </div>
+
+        <!-- Doc 3 -->
+        <div class="doc-panel" role="tabpanel" id="dp-3" aria-labelledby="dt-3" tabindex="0">
+          <span class="chip">Microsoft Learn</span>
+          <h3><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router" target="_blank" rel="noopener">Lower the cost of each request</a></h3>
+          <p>Model router is a model you deploy like any other, but it looks at each prompt and sends it to the most suitable underlying model, so simple requests don't pay frontier-model prices.</p>
+          <div class="widget" id="router">
+            <div class="widget-head"><h4>Model router: choose a routing mode</h4><span class="tiny muted">Illustrative models and scores</span></div>
+            <div class="pills js-only" role="group" aria-label="Routing mode">
+              <button class="pill" type="button" data-mode="balanced" aria-pressed="true">Balanced <small>(default)</small></button>
+              <button class="pill" type="button" data-mode="cost" aria-pressed="false">Cost</button>
+              <button class="pill" type="button" data-mode="quality" aria-pressed="false">Quality</button>
+            </div>
+            <div class="rt-chart" aria-hidden="true">
+              <div class="rt-axis"></div>
+              <div class="rt-band" id="rt-band" data-l="Balanced range"></div>
+              <div class="rt-model" data-m="A" style="--x:8%"><i>A</i><small>$</small></div>
+              <div class="rt-model" data-m="B" style="--x:30%"><i>B</i><small>$$</small></div>
+              <div class="rt-model inband picked" data-m="C" style="--x:58%"><i>C</i><small>$$$</small></div>
+              <div class="rt-model inband" data-m="D" style="--x:76%"><i>D</i><small>$$$$</small></div>
+              <div class="rt-model inband" data-m="E" style="--x:92%"><i>E</i><small>$$$$$</small></div>
+            </div>
+            <div class="rt-scale" aria-hidden="true"><span>Lower quality</span><span>Higher quality</span></div>
+            <p class="result good" id="rt-result" aria-live="polite"><b>Balanced</b> (the default) picks the cheapest model within a narrow quality range of the best one. Here that routes to <b>model C</b>.</p>
+            <ul class="notes-list">
+              <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span><b>Cost</b> widens that range to save more. <b>Quality</b> always picks the highest-rated model.</span></li>
+              <li><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>The usable context window is limited by the smallest underlying model, so use a model subset if you need longer contexts, and compare the router against your current setup before switching.</span></li>
+            </ul>
+          </div>
+          <div class="widget" id="cache">
+            <div class="widget-head"><h4>Prompt caching: order matters</h4><span class="tiny muted">Illustrative prompt</span></div>
+            <div class="pills js-only" role="group" aria-label="Prompt layout">
+              <button class="pill" type="button" data-layout="bad" aria-pressed="true">Date stamp first</button>
+              <button class="pill" type="button" data-layout="good" aria-pressed="false">Stable content first</button>
+            </div>
+            <ol class="prompt" id="prompt" aria-label="Prompt blocks in order">
+              <li class="blk changing" data-k="date"><span>Date stamp</span><em>Changes every call</em></li>
+              <li class="blk" data-k="sys"><span>System instructions</span><em>Stable</em></li>
+              <li class="blk" data-k="tools"><span>Tool definitions</span><em>Stable</em></li>
+              <li class="blk" data-k="policy"><span>Fraud policy text</span><em>Stable</em></li>
+              <li class="blk changing" data-k="case"><span>Case details</span><em>Changes every call</em></li>
+            </ol>
+            <p class="result bad" id="cache-result" aria-live="polite"><b>No cached prefix.</b> The first block changes on every call, so the cache never gets a hit. This is the version 2 problem from the demo.</p>
+            <ul class="notes-list">
+              <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Prompt caching reuses identical prompt prefixes, so keep stable content such as system instructions and tool definitions at the top and put content that changes at the bottom.</span></li>
+              <li><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>Cache reads are discounted on standard deployments, but GPT-5.6 and later models can also charge for cache writes, so a prefix that keeps changing costs more.</span></li>
+            </ul>
+          </div>
+          <div class="callout">
+            <svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>
+            <div><h4>Global batch</h4><p>For work that doesn't need an immediate answer, global batch processes large jobs from a single file with a 24-hour target turnaround at 50% less than global standard pricing. It uses its own quota, so live traffic isn't affected.</p></div>
+            <span class="big">−50%</span>
+          </div>
+          <div class="link-row">
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router" target="_blank" rel="noopener">Model router concepts<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/model-router" target="_blank" rel="noopener">How to use model router<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/prompt-caching" target="_blank" rel="noopener">Prompt caching<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/batch" target="_blank" rel="noopener">Global batch processing<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+          </div>
+        </div>
+
+        <!-- Doc 4 -->
+        <div class="doc-panel" role="tabpanel" id="dp-4" aria-labelledby="dt-4" tabindex="0">
+          <span class="chip">Microsoft Learn</span>
+          <h3><a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/provisioned-throughput" target="_blank" rel="noopener">Commit to capacity with PTUs, reservations, and prepurchase</a></h3>
+          <p>Provisioned throughput units (PTUs) reserve dedicated model capacity for a deployment and are billed per PTU per hour whether or not you send traffic. Pick the workload below to see which option the docs point to.</p>
+          <div class="widget" id="capacity">
+            <div class="widget-head"><h4>Which option fits the workload?</h4></div>
+            <div class="scen js-only" role="group" aria-label="Workload type">
+              <button class="scen-btn" type="button" data-s="ptu" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-gauge"/></svg>Predictable, high-volume, latency-sensitive</button>
+              <button class="scen-btn" type="button" data-s="std" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-flask"/></svg>Development or unpredictable traffic</button>
+              <button class="scen-btn" type="button" data-s="batch" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>Large jobs that don't need an immediate answer</button>
+              <button class="scen-btn" type="button" data-s="ppp" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Usage across Foundry, Copilot Studio, Fabric, and GitHub</button>
+            </div>
+            <article class="rec" data-s="ptu">
+              <h5>Provisioned throughput (PTUs)</h5>
+              <ul>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Dedicated capacity, billed per PTU per hour whether or not you send traffic. That pays off for predictable, high-volume, latency-sensitive workloads.</span></li>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Use the sizing and billing guides to work out how many PTUs a workload needs.</span></li>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Spillover can send requests that overflow a busy provisioned deployment to a matching standard deployment.</span></li>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>To lower the hourly PTU rate, buy a Foundry Provisioned Throughput Reservation for a one-month or one-year term.</span></li>
+              </ul>
+            </article>
+            <article class="rec" data-s="std">
+              <h5>Standard pay-per-token deployments</h5>
+              <ul>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Standard pay-per-token deployments remain the better fit for development and unpredictable traffic.</span></li>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>PTUs bill every hour whether or not you send traffic, so they suit predictable, high-volume, latency-sensitive workloads instead.</span></li>
+              </ul>
+            </article>
+            <article class="rec" data-s="batch">
+              <h5>Global batch</h5>
+              <ul>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Processes large jobs from a single file with a 24-hour target turnaround.</span></li>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Costs 50% less than global standard pricing.</span></li>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Uses its own quota, so live traffic isn't affected.</span></li>
+              </ul>
+            </article>
+            <article class="rec" data-s="ppp">
+              <h5>Microsoft Agent Prepurchase Plan</h5>
+              <ul>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Sells discounted Agent commit units for a one-year term.</span></li>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Pays down eligible usage across Foundry, Copilot Studio, Fabric, and GitHub.</span></li>
+                <li><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>Its discount doesn't combine with other discounts you already have.</span></li>
+              </ul>
+            </article>
+          </div>
+          <p class="sub-label">Good to know</p>
+          <div class="facts-grid">
+            <div class="fact"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>PTU quota is granted per subscription, region, and deployment type, not per model.</span></div>
+            <div class="fact"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>Reservations are bought separately for Global, Data Zone, and Regional deployments.</span></div>
+            <div class="fact"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>Reservations don't guarantee capacity, so create your deployments first.</span></div>
+            <div class="fact"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><span>Deleting a deployment doesn't cancel its reservation.</span></div>
+          </div>
+          <div class="link-row">
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/provisioned-throughput" target="_blank" rel="noopener">Provisioned throughput overview<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/provisioned-throughput-billing" target="_blank" rel="noopener">PTU billing<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/provisioned-throughput-sizing" target="_blank" rel="noopener">PTU sizing<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/spillover-traffic-management" target="_blank" rel="noopener">Spillover<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/microsoft-foundry" target="_blank" rel="noopener">PTU reservations<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+            <a class="link-chip" href="https://learn.microsoft.com/en-us/azure/cost-management-billing/reservations/agent-pre-purchase" target="_blank" rel="noopener">Agent Prepurchase Plan<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LEARN ============ -->
+<section class="section tint" id="learn" aria-labelledby="learn-title">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Keep learning</p>
+      <h2 id="learn-title">Blog series, video, and a hands-on lab<a class="hash" href="#learn" aria-label="Link to the keep learning section">#</a></h2>
+      <p class="lead">Go deeper on why agent costs climb, the levers that bring them down, and how to govern spend over time.</p>
+    </div>
+
+    <!-- Blog series -->
+    <div class="sub" id="series">
+      <div class="sub-head reveal">
+        <div>
+          <p class="eyebrow">Azure Blog series · 4 parts</p>
+          <h3>The Economics of Agent Optimization</h3>
+          <p>Foundry product leaders argue that keeping agent costs under control takes ongoing management, not just a cheaper model.</p>
+        </div>
+        <a class="btn btn-outline" href="https://azure.microsoft.com/en-us/blog/tag/the-economics-of-agent-optimization/" target="_blank" rel="noopener">Browse the series<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+      </div>
+      <div class="decisions reveal" role="img" aria-label="The series is framed around three decisions: optimize each request, improve each agent over time, and govern spend">
+        <div class="decision"><svg class="ic" aria-hidden="true"><use href="#i-bolt"/></svg>Optimize each request</div>
+        <span class="dec-arrow" aria-hidden="true"><svg class="ic"><use href="#i-arrow"/></svg></span>
+        <div class="decision"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg>Improve each agent over time</div>
+        <span class="dec-arrow" aria-hidden="true"><svg class="ic"><use href="#i-arrow"/></svg></span>
+        <div class="decision"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg>Govern spend</div>
+      </div>
+      <ol class="parts">
+        <li class="card part hoverable reveal">
+          <span class="pn">01</span>
+          <h4><a href="https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-from-pilots-to-measurable-returns/" target="_blank" rel="noopener">From pilots to measurable returns</a></h4>
+          <p>Why costs climb: models resend the full context on every turn, and an agent can make many model calls to finish one task. Frames the series around three decisions.</p>
+          <a class="more" href="https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-from-pilots-to-measurable-returns/" target="_blank" rel="noopener" aria-label="Read part 1: From pilots to measurable returns">Read part 1<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </li>
+        <li class="card part hoverable reveal">
+          <span class="pn">02</span>
+          <h4><a href="https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-four-ways-to-lower-the-cost/" target="_blank" rel="noopener">Four ways to lower the cost</a></h4>
+          <p>The runtime levers: model and deployment type (model router, standard, priority, provisioned, batch, or fine-tuning), prompt and semantic caching, prompt and agent optimizers, and observability.</p>
+          <a class="more" href="https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-four-ways-to-lower-the-cost/" target="_blank" rel="noopener" aria-label="Read part 2: Four ways to lower the cost">Read part 2<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </li>
+        <li class="card part hoverable reveal">
+          <span class="pn">03</span>
+          <h4><a href="https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-context-engineering-for-enterprise-ai-agents/" target="_blank" rel="noopener">Context engineering for enterprise AI agents</a></h4>
+          <p>Controlling what goes into the context window on each turn: Foundry IQ for retrieval, Toolbox and tool search so agents don't send every tool definition, centrally managed skills, and agent memory.</p>
+          <a class="more" href="https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-context-engineering-for-enterprise-ai-agents/" target="_blank" rel="noopener" aria-label="Read part 3: Context engineering for enterprise AI agents">Read part 3<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </li>
+        <li class="card part hoverable reveal">
+          <span class="pn">04</span>
+          <h4><a href="https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-how-ai-agent-governance-controls-cost-and-proves-roi/" target="_blank" rel="noopener">How AI agent governance controls cost and proves ROI</a></h4>
+          <p>See spend through Foundry cost views, project-level attribution, and gateway token metrics. Cap it with Foundry Control Plane token quotas, the API Management <code>llm-token-limit</code> policy, and Cost Management budgets. Then measure business value to decide which agents to scale or retire.</p>
+          <a class="more" href="https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-how-ai-agent-governance-controls-cost-and-proves-roi/" target="_blank" rel="noopener" aria-label="Read part 4: How AI agent governance controls cost and proves ROI">Read part 4<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Video -->
+    <div class="sub" id="video">
+      <div class="video-grid">
+        <a class="yt reveal" href="https://www.youtube.com/watch?v=mB0IyELzjRg" target="_blank" rel="noopener" aria-label="Watch Tokenomics: The new AI currency and your options explained, on YouTube">
+          <span class="tok">Tokenomics<small>The new AI currency</small></span>
+          <span class="center"><span class="play"><svg class="ic fill" aria-hidden="true"><use href="#i-play"/></svg></span></span>
+          <span class="yt-meta"><span>April Gittens · Jeremy Chapman</span><span class="chip">Watch on YouTube</span></span>
+        </a>
+        <div class="video-copy reveal">
+          <p class="eyebrow">Video</p>
+          <h3>Tokenomics | The new AI currency &amp; your options explained</h3>
+          <p>April Gittens, Microsoft Principal Cloud Advocate, joins Jeremy Chapman, Microsoft 365 Director, to break down how token pricing really works and why AI costs spike as adoption scales.</p>
+          <p class="sub-label">Because models are stateless, every turn resends</p>
+          <div class="stateless"><span>System prompt</span><span>Conversation history</span><span>Tool definitions</span><span>Retrieved documents</span></div>
+          <p class="resend"><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg>…as input tokens</p>
+          <p class="sub-label">Design fixes covered</p>
+          <div class="chips"><span class="chip">Trim system prompts</span><span class="chip">Summarize conversation history</span><span class="chip">Cap output tokens, with matching instructions</span><span class="chip">Cache static prefixes at roughly 10% of normal input cost</span></div>
+          <div class="viz toolbox" role="img" aria-label="Toolbox cut one agent run from about 4,700 input tokens to 467">
+            <div class="viz-head"><span class="chip">Toolbox: one agent run</span><span class="tiny muted">About 90% fewer input tokens</span></div>
+            <div class="tb">
+              <div class="tb-row"><span>Without Toolbox</span><i style="--w:100%"></i><b>~4,700</b></div>
+              <div class="tb-row after"><span>With Toolbox</span><i style="--w:9.94%"></i><b>467</b></div>
+            </div>
+          </div>
+          <p>Model choice is the biggest lever. Compare models side by side on quality, cost, and throughput, or let Model Router pick a model for each prompt. Agent Optimizer tests prompt, model, and tool configurations together to find the best combination.</p>
+          <div class="cta-row">
+            <a class="btn btn-light" href="https://www.youtube.com/watch?v=mB0IyELzjRg" target="_blank" rel="noopener"><svg class="ic fill" aria-hidden="true"><use href="#i-play"/></svg>Watch the video</a>
+            <a class="btn btn-ghost" href="https://aka.ms/FoundryTokenomics" target="_blank" rel="noopener">More at aka.ms/FoundryTokenomics<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lab -->
+    <div class="sub" id="lab">
+      <div class="lab-grid">
+        <div class="reveal">
+          <p class="eyebrow">Hands-on lab</p>
+          <div class="sub-head"><div><h3>AI-Gateway FinOps framework lab</h3><p>This lab from the Azure-Samples AI-Gateway repo applies the FinOps Framework to models served through the AI gateway in Azure API Management. That's a separate route from the Azure AI Gateway cost limits in the docs above.</p></div></div>
+          <ol class="steps">
+            <li><span class="sn"><svg class="ic" aria-hidden="true"><use href="#i-cube"/></svg></span><div><b>Deploy</b><span class="d">A Jupyter notebook deploys the environment with Bicep.</span></div></li>
+            <li><span class="sn"><svg class="ic" aria-hidden="true"><use href="#i-key"/></svg></span><div><b>Allocate</b><span class="d">A token-limit policy on each API Management product gives every team or customer its own allowance.</span></div></li>
+            <li><span class="sn"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg></span><div><b>Track</b><span class="d">A dashboard template and Azure Monitor workbooks track spend.</span></div></li>
+            <li><span class="sn"><svg class="ic" aria-hidden="true"><use href="#i-block"/></svg></span><div><b>Enforce</b><span class="d">When a subscription goes over its cost quota, an Azure Monitor alert triggers a Logic App that automatically disables that API Management subscription.</span></div></li>
+            <li><span class="sn"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div><b>Clean up</b><span class="d">A separate notebook removes the resources when you're done.</span></div></li>
+          </ol>
+          <a class="btn btn-light" href="https://github.com/Azure-Samples/AI-Gateway/tree/main/labs/finops-framework" target="_blank" rel="noopener"><svg class="ic fill" aria-hidden="true"><use href="#i-github"/></svg>Open the lab on GitHub</a>
+        </div>
+        <div class="card checklist reveal">
+          <h4>Before you start</h4>
+          <p class="tiny muted">Tick off what you have. Your checklist is saved in this browser only.</p>
+          <div class="cl-progress"><div class="meter" role="progressbar" aria-label="Prerequisites ready" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0" id="cl-meter"><div class="fill" id="cl-fill" style="width:0%"></div></div><span id="cl-count">0 of 5 ready</span></div>
+          <ul class="cl" id="checklist">
+            <li><input type="checkbox" id="pre-1"><label for="pre-1"><span class="box"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><span>An Azure subscription where you have Contributor plus Role Based Access Control Administrator (or Owner)</span></label></li>
+            <li><input type="checkbox" id="pre-2"><label for="pre-2"><span class="box"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><span>Python 3.12 or later</span></label></li>
+            <li><input type="checkbox" id="pre-3"><label for="pre-3"><span class="box"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><span>VS Code with the Jupyter extension</span></label></li>
+            <li><input type="checkbox" id="pre-4"><label for="pre-4"><span class="box"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><span>uv</span></label></li>
+            <li><input type="checkbox" id="pre-5"><label for="pre-5"><span class="box"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><span>The Azure CLI</span></label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Further reading -->
+    <div class="sub" id="reading">
+      <div class="sub-head reveal">
+        <div>
+          <p class="eyebrow">Further reading</p>
+          <h3>FinOps for AI, beyond Foundry</h3>
+          <p>These resources apply to AI spend in general rather than to Foundry specifically.</p>
+        </div>
+      </div>
+      <div class="reading">
+        <a class="card read hoverable reveal" href="https://github.com/microsoft/finops-toolkit" target="_blank" rel="noopener"><span class="src">Microsoft · Open source</span><b>FinOps toolkit</b><span class="d">Microsoft's open-source tools for adopting FinOps on the Microsoft Cloud. It's useful as a reporting layer on top of Foundry cost data.</span><span class="go">Open on GitHub<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></a>
+        <a class="card read hoverable reveal" href="https://www.finops.org/framework/technology-categories/ai/" target="_blank" rel="noopener"><span class="src">FinOps Foundation</span><b>FinOps Framework: AI technology category</b><span class="d">The FinOps Foundation's guidance on applying FinOps practices to AI.</span><span class="go">Read<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></a>
+        <a class="card read hoverable reveal" href="https://www.finops.org/wg/how-to-build-a-generative-ai-cost-and-usage-tracker/" target="_blank" rel="noopener"><span class="src">FinOps Foundation · Working group paper</span><b>How to Build a Generative AI Cost and Usage Tracker</b><span class="d">A FinOps Foundation working group paper.</span><span class="go">Read<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></a>
+        <a class="card read hoverable reveal" href="https://www.finops.org/wg/cost-estimation-of-ai-workloads/" target="_blank" rel="noopener"><span class="src">FinOps Foundation · Working group paper</span><b>Cost Estimation of AI Workloads</b><span class="d">A FinOps Foundation working group paper.</span><span class="go">Read<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></a>
+        <a class="card read hoverable reveal" href="https://www.finops.org/wg/optimizing-genai-usage/" target="_blank" rel="noopener"><span class="src">FinOps Foundation · Working group paper</span><b>Optimizing GenAI Usage</b><span class="d">A working group paper on balancing cost, performance, and efficiency.</span><span class="go">Read<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand"><svg class="ms-logo" viewBox="0 0 21 21" aria-hidden="true" focusable="false"><rect width="10" height="10" fill="#f25022"/><rect x="11" width="10" height="10" fill="#7fba00"/><rect y="11" width="10" height="10" fill="#00a4ef"/><rect x="11" y="11" width="10" height="10" fill="#ffb900"/></svg>Microsoft Ignite 2026</div>
+        <p>November 17–20, 2026 · San Francisco and online</p>
+        <p>Demos, presentations, and resources for Microsoft Foundry from Microsoft Ignite 2026.</p>
+      </div>
+      <div>
+        <h4>In this folder</h4>
+        <ul>
+          <li><a href="https://github.com/microsoft-foundry/ignite-2026-demos/blob/main/finops-on-microsoft-foundry/README.md" target="_blank" rel="noopener">README.md</a></li>
+          <li><a href="https://github.com/microsoft-foundry/ignite-2026-demos/blob/main/finops-on-microsoft-foundry/FinOps%20for%20AI%20Azure%20and%20GitHub.PDF" target="_blank" rel="noopener">FinOps for AI Azure and GitHub.PDF</a> <small>· 27 slides</small></li>
+          <li><a href="https://github.com/microsoft-foundry/ignite-2026-demos/raw/main/finops-on-microsoft-foundry/FinOps%20in%20Microsoft%20Foundry%20Full%20Demo.mp4" target="_blank" rel="noopener">FinOps in Microsoft Foundry Full Demo.mp4</a> <small>· 4K, 341 MB</small></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Repository</h4>
+        <ul>
+          <li><a href="https://github.com/microsoft-foundry/ignite-2026-demos" target="_blank" rel="noopener">microsoft-foundry/ignite-2026-demos</a></li>
+          <li><a href="https://github.com/microsoft-foundry/ignite-2026-demos/tree/main/finops-on-microsoft-foundry" target="_blank" rel="noopener">finops-on-microsoft-foundry</a></li>
+          <li><a href="#top">Back to top</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine">
+      <p>Woodgrove is a fictional bank used for demonstration. Visuals marked “Illustrative” use sample numbers to explain a concept; they aren't product data, defaults, or prices. Features marked (preview) were in preview at Microsoft Ignite 2026.</p>
+      <p>Documentation released under CC-BY-4.0.</p>
+    </div>
+  </div>
+</footer>
+
+<a class="to-top js-only" id="to-top" href="#top" aria-label="Back to top"><svg class="ic" aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
+
+<div class="palette" id="palette" role="dialog" aria-modal="true" aria-labelledby="palette-title" hidden>
+  <div class="pal-backdrop" data-close></div>
+  <div class="pal-box">
+    <h2 class="sr-only" id="palette-title">Search resources</h2>
+    <div class="pal-input">
+      <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+      <input id="palette-q" type="text" role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list" aria-label="Search the demo, sessions, docs, videos, and more" placeholder="Search the demo, sessions, docs, videos…" autocomplete="off" spellcheck="false">
+      <button class="pal-close" type="button" data-close aria-label="Close search"><kbd>Esc</kbd></button>
+    </div>
+    <div class="pal-filters" role="group" aria-label="Filter by type">
+      <button class="pf" type="button" data-g="all" aria-pressed="true">All</button>
+      <button class="pf" type="button" data-g="page" aria-pressed="false">On this page</button>
+      <button class="pf" type="button" data-g="session" aria-pressed="false">Sessions</button>
+      <button class="pf" type="button" data-g="docs" aria-pressed="false">Docs</button>
+      <button class="pf" type="button" data-g="blog" aria-pressed="false">Blogs</button>
+      <button class="pf" type="button" data-g="video" aria-pressed="false">Videos</button>
+      <button class="pf" type="button" data-g="more" aria-pressed="false">Deck, lab &amp; reading</button>
+    </div>
+    <ul class="pal-list" id="palette-list" role="listbox" aria-label="Results"></ul>
+    <p class="pal-empty" id="palette-empty" hidden>Nothing matches. Try a different word.</p>
+    <div class="pal-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> to move</span><span><kbd>Enter</kbd> to open</span><span><kbd>Esc</kbd> to close</span></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var doc = document.documentElement;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var fmt = function (n) { return n.toLocaleString('en-US'); };
+
+  function icon(id, fill) {
+    var s = document.createElementNS(SVGNS, 'svg');
+    s.setAttribute('class', 'ic' + (fill ? ' fill' : ''));
+    s.setAttribute('aria-hidden', 'true');
+    var u = document.createElementNS(SVGNS, 'use');
+    u.setAttribute('href', '#' + id);
+    s.appendChild(u);
+    return s;
+  }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  /* ---------- Scroll progress + back to top ---------- */
+  var bar = $('#progress-bar'), toTop = $('#to-top'), ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var max = doc.scrollHeight - window.innerHeight;
+      var p = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      if (bar) bar.style.width = (p * 100).toFixed(2) + '%';
+      if (toTop) toTop.classList.toggle('show', window.scrollY > 900);
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- Mobile menu ---------- */
+  var navBtn = $('#nav-toggle'), nav = $('#site-nav');
+  function closeNav() { nav.classList.remove('open'); navBtn.setAttribute('aria-expanded', 'false'); navBtn.setAttribute('aria-label', 'Open section menu'); }
+  navBtn.addEventListener('click', function () {
+    var open = nav.classList.toggle('open');
+    navBtn.setAttribute('aria-expanded', String(open));
+    navBtn.setAttribute('aria-label', open ? 'Close section menu' : 'Open section menu');
+  });
+  $$('a', nav).forEach(function (a) { a.addEventListener('click', closeNav); });
+
+  /* ---------- Scrollspy ---------- */
+  var navLinks = {};
+  $$('a[href^="#"]', nav).forEach(function (a) { navLinks[a.getAttribute('href').slice(1)] = a; });
+  if ('IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        Object.keys(navLinks).forEach(function (k) { navLinks[k].classList.remove('active'); navLinks[k].removeAttribute('aria-current'); });
+        var a = navLinks[e.target.id];
+        if (a) { a.classList.add('active'); a.setAttribute('aria-current', 'true'); }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(navLinks).forEach(function (id) { var s = document.getElementById(id); if (s) spy.observe(s); });
+  }
+
+  /* ---------- Reveal + chart animations ---------- */
+  var revealTargets = $$('.reveal, .viz');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    revealTargets.forEach(function (t) { io.observe(t); });
+  } else {
+    revealTargets.forEach(function (t) { t.classList.add('in'); });
+  }
+  function replay(container) {
+    $$('.viz', container).forEach(function (v) {
+      if (reduceMotion) { v.classList.add('in'); return; }
+      v.classList.remove('in');
+      requestAnimationFrame(function () { requestAnimationFrame(function () { v.classList.add('in'); }); });
+    });
+  }
+
+  /* ---------- Hero counters ---------- */
+  function countUp(node) {
+    var end = Number(node.getAttribute('data-count'));
+    if (reduceMotion) { node.textContent = String(end); return; }
+    var t0 = performance.now(), dur = 1100;
+    node.textContent = '0';
+    (function step(t) {
+      var p = Math.min(1, (t - t0) / dur);
+      node.textContent = String(Math.round(end * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) requestAnimationFrame(step);
+    })(t0);
+  }
+  if ('IntersectionObserver' in window) {
+    var kio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { $$('[data-count]', e.target).forEach(countUp); kio.unobserve(e.target); } });
+    }, { threshold: 0.4 });
+    $$('.kpi').forEach(function (k) { kio.observe(k); });
+  }
+
+  /* ---------- Tabs (ARIA tab pattern) ---------- */
+  function initTabs(list) {
+    var tabs = $$('[role="tab"]', list);
+    var vertical = list.getAttribute('aria-orientation') === 'vertical';
+    function select(tab, focus, initial) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        if (panel) {
+          panel.hidden = !on;
+          if (on && !initial) replay(panel);
+        }
+      });
+      if (focus) tab.focus();
+      list.dispatchEvent(new CustomEvent('tabchange', { detail: { index: tabs.indexOf(tab) } }));
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { select(t, false, false); });
+      t.addEventListener('keydown', function (e) {
+        var next = null;
+        if (e.key === (vertical ? 'ArrowDown' : 'ArrowRight')) next = (i + 1) % tabs.length;
+        else if (e.key === (vertical ? 'ArrowUp' : 'ArrowLeft')) next = (i - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = tabs.length - 1;
+        if (next !== null) { e.preventDefault(); select(tabs[next], true, false); }
+      });
+    });
+    var start = tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0];
+    select(start, false, true);
+    list._select = function (i) { select(tabs[i], false, false); };
+  }
+  $$('[role="tablist"]').forEach(initTabs);
+
+  /* ---------- Demo story: previous / next ---------- */
+  var storyList = $('#story-tabs'), prev = $('#story-prev'), next = $('#story-next'), count = $('#story-count');
+  var storyCount = $$('[role="tab"]', storyList).length, storyIndex = 0;
+  storyList.addEventListener('tabchange', function (e) {
+    storyIndex = e.detail.index;
+    prev.disabled = storyIndex === 0;
+    next.disabled = storyIndex === storyCount - 1;
+    count.textContent = (storyIndex + 1) + ' / ' + storyCount;
+  });
+  prev.addEventListener('click', function () { if (storyIndex > 0) storyList._select(storyIndex - 1); });
+  next.addEventListener('click', function () { if (storyIndex < storyCount - 1) storyList._select(storyIndex + 1); });
+
+  /* ---------- Demo video: stream on demand ---------- */
+  var VIDEO_URL = 'https://github.com/user-attachments/assets/625d8161-95ae-4c08-a046-cfc07f91d943';
+  var stage = $('#video-stage'), playBtn = $('#video-play'), fallback = $('#video-fallback');
+  playBtn.addEventListener('click', function () {
+    var v = document.createElement('video');
+    v.controls = true;
+    v.playsInline = true;
+    v.preload = 'auto';
+    v.setAttribute('aria-label', 'FinOps in Microsoft Foundry: full demo');
+    v.addEventListener('error', function () {
+      v.remove();
+      playBtn.hidden = false;
+      fallback.hidden = false;
+    });
+    v.src = VIDEO_URL;
+    playBtn.hidden = true;
+    stage.appendChild(v);
+    v.focus();
+    var p = v.play();
+    if (p && typeof p.catch === 'function') p.catch(function () {});
+  });
+
+  /* ---------- Token budget simulator ---------- */
+  (function () {
+    var BUDGET = 20000, ALERT_AT = 0.8;
+    var turnCost = function (n) { return 1800 + 200 * (n - 1); };
+    var send = $('#sim-send'), reset = $('#sim-reset'), fill = $('#sim-fill'), meter = $('#sim-meter');
+    var usedEl = $('#sim-used'), pctEl = $('#sim-pct'), log = $('#sim-log'), status = $('#sim-status');
+    var used = 0, turn = 0, alerted = false, full = false;
+    function setStatus(kind, iconId, title, body) {
+      status.className = 'sim-status' + (kind ? ' ' + kind : '');
+      var box = el('div');
+      box.appendChild(el('b', null, title));
+      box.appendChild(el('span', null, body));
+      status.replaceChildren(icon(iconId), box);
+    }
+    function addLog(left, right, cls) {
+      var li = el('li', cls || null);
+      li.appendChild(el('b', null, left));
+      li.appendChild(el('span', null, right));
+      log.insertBefore(li, log.firstChild);
+    }
+    function render() {
+      var pct = Math.min(100, used / BUDGET * 100);
+      fill.style.width = pct + '%';
+      usedEl.textContent = fmt(used);
+      pctEl.textContent = (Math.round(pct * 10) / 10) + '%';
+      meter.setAttribute('aria-valuenow', String(Math.round(pct)));
+      meter.classList.toggle('is-alert', alerted && !full);
+      meter.classList.toggle('is-block', full);
+    }
+    send.addEventListener('click', function () {
+      if (full) {
+        addLog('Turn ' + (turn + 1), 'Blocked · 0 tokens', 'blocked');
+        setStatus('block', 'i-block', 'Request blocked by cost control: Per-conversation token budget', 'This conversation has used 100% of its 20,000-token budget, so the control blocks new requests. The error names the control that stopped it.');
+        send.disabled = true;
+        return;
+      }
+      turn += 1;
+      var c = turnCost(turn);
+      used += c;
+      var pct = Math.round(used / BUDGET * 100);
+      if (used >= BUDGET) {
+        full = true;
+        addLog('Turn ' + turn, fmt(c) + ' tokens · total ' + fmt(used), 'warn');
+        setStatus('full', 'i-alert', 'Budget reached: 100%', 'The next request in this conversation will be blocked.');
+      } else if (!alerted && used >= ALERT_AT * BUDGET) {
+        alerted = true;
+        addLog('Turn ' + turn, fmt(c) + ' tokens · total ' + fmt(used), 'warn');
+        setStatus('alert', 'i-alert', 'Alert: ' + pct + '% of the budget used', 'The 80% alert threshold has been crossed. The conversation can continue until it reaches 100%.');
+      } else {
+        addLog('Turn ' + turn, fmt(c) + ' tokens · total ' + fmt(used));
+        if (!alerted) setStatus('', 'i-shield', 'Within budget', 'Turn ' + turn + ' used ' + fmt(c) + ' tokens. Each turn resends the growing history, so the next one costs more.');
+      }
+      render();
+    });
+    reset.addEventListener('click', function () {
+      used = 0; turn = 0; alerted = false; full = false;
+      log.replaceChildren();
+      send.disabled = false;
+      setStatus('', 'i-shield', 'Budget active', 'Send the first turn to start the conversation.');
+      render();
+      send.focus();
+    });
+    render();
+  })();
+
+  /* ---------- Sessions filter ---------- */
+  (function () {
+    var cards = $$('#session-list .session'), q = $('#session-q'), countEl = $('#session-count'), empty = $('#session-empty');
+    var pills = $$('#sessions [data-format]').filter(function (b) { return b.tagName === 'BUTTON'; });
+    var format = 'all';
+    function apply() {
+      var terms = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean), shown = 0;
+      cards.forEach(function (c) {
+        var text = c.textContent.toLowerCase();
+        var ok = (format === 'all' || c.getAttribute('data-format') === format) && terms.every(function (t) { return text.indexOf(t) !== -1; });
+        c.hidden = !ok;
+        if (ok) { shown += 1; c.classList.add('in'); }
+      });
+      countEl.textContent = 'Showing ' + shown + ' of ' + cards.length + ' sessions';
+      empty.hidden = shown > 0;
+    }
+    pills.forEach(function (b) {
+      b.addEventListener('click', function () {
+        format = b.getAttribute('data-format');
+        pills.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        apply();
+      });
+    });
+    q.addEventListener('input', apply);
+  })();
+
+  /* ---------- Cost lifecycle steps ---------- */
+  (function () {
+    var steps = $$('.lc'), items = $$('.lc-item');
+    function show(i) {
+      steps.forEach(function (s) { s.setAttribute('aria-pressed', String(s.getAttribute('data-i') === i)); });
+      items.forEach(function (it) { it.hidden = it.getAttribute('data-i') !== i; });
+    }
+    steps.forEach(function (s) { s.addEventListener('click', function () { show(s.getAttribute('data-i')); }); });
+    show('0');
+  })();
+
+  /* ---------- Model router modes ---------- */
+  (function () {
+    var MODES = {
+      balanced: { from: 53, pick: 'C', label: 'Balanced range', text: ['Balanced', ' (the default) picks the cheapest model within a narrow quality range of the best one. Here that routes to ', 'model C', '.'] },
+      cost: { from: 25, pick: 'B', label: 'Cost range', text: ['Cost', ' widens that range to save more. Here that routes to ', 'model B', ', a cheaper model.'] },
+      quality: { from: 86, pick: 'E', label: 'Top model only', text: ['Quality', ' always picks the highest-rated model. Here that routes to ', 'model E', ', the most expensive.'] }
+    };
+    var band = $('#rt-band'), models = $$('#router .rt-model'), result = $('#rt-result'), buttons = $$('#router [data-mode]');
+    function set(mode) {
+      var m = MODES[mode];
+      band.style.setProperty('--from', m.from + '%');
+      band.setAttribute('data-l', m.label);
+      models.forEach(function (node) {
+        var x = parseFloat(node.style.getPropertyValue('--x'));
+        node.classList.toggle('inband', x >= m.from);
+        node.classList.toggle('picked', node.getAttribute('data-m') === m.pick);
+      });
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === mode)); });
+      result.replaceChildren(el('b', null, m.text[0]), document.createTextNode(m.text[1]), el('b', null, m.text[2]), document.createTextNode(m.text[3]));
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { set(b.getAttribute('data-mode')); }); });
+    set('balanced');
+  })();
+
+  /* ---------- Prompt caching layout ---------- */
+  (function () {
+    var ORDER = { bad: ['date', 'sys', 'tools', 'policy', 'case'], good: ['sys', 'tools', 'policy', 'date', 'case'] };
+    var CHANGING = { date: true, 'case': true };
+    var blocks = $$('#prompt .blk'), result = $('#cache-result'), buttons = $$('#cache [data-layout]');
+    function set(layout, animate) {
+      var first = new Map(blocks.map(function (b) { return [b, b.getBoundingClientRect().top]; }));
+      var order = ORDER[layout], cached = 0;
+      for (var i = 0; i < order.length && !CHANGING[order[i]]; i++) cached += 1;
+      blocks.forEach(function (b) {
+        var idx = order.indexOf(b.getAttribute('data-k'));
+        b.style.order = String(idx);
+        b.classList.toggle('cached', idx < cached);
+      });
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x.getAttribute('data-layout') === layout)); });
+      result.className = 'result ' + (cached ? 'good' : 'bad');
+      if (cached) {
+        result.replaceChildren(el('b', null, 'Cached prefix: ' + cached + ' of ' + order.length + ' blocks.'), document.createTextNode(' The stable blocks at the top match from call to call, so they can be served from the cache. Content that changes sits at the bottom.'));
+      } else {
+        result.replaceChildren(el('b', null, 'No cached prefix.'), document.createTextNode(' The first block changes on every call, so the cache never gets a hit. This is the version 2 problem from the demo.'));
+      }
+      if (animate && !reduceMotion && blocks[0].animate) {
+        blocks.forEach(function (b) {
+          var dy = first.get(b) - b.getBoundingClientRect().top;
+          if (dy) b.animate([{ transform: 'translateY(' + dy + 'px)' }, { transform: 'none' }], { duration: 480, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        });
+      }
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { set(b.getAttribute('data-layout'), true); }); });
+    set('bad', false);
+  })();
+
+  /* ---------- Capacity options ---------- */
+  (function () {
+    var buttons = $$('#capacity .scen-btn'), recs = $$('#capacity .rec');
+    function set(s) {
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-s') === s)); });
+      recs.forEach(function (r) { r.hidden = r.getAttribute('data-s') !== s; });
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { set(b.getAttribute('data-s')); }); });
+    set('ptu');
+  })();
+
+  /* ---------- Lab checklist (saved locally) ---------- */
+  (function () {
+    var KEY = 'finops-foundry-lab-prereqs', boxes = $$('#checklist input[type="checkbox"]');
+    var fill = $('#cl-fill'), countEl = $('#cl-count'), meter = $('#cl-meter'), saved = {};
+    try { saved = JSON.parse(window.localStorage.getItem(KEY) || '{}') || {}; } catch (e) { saved = {}; }
+    function update() {
+      var n = boxes.filter(function (b) { return b.checked; }).length;
+      fill.style.width = (n / boxes.length * 100) + '%';
+      countEl.textContent = n === boxes.length ? 'All set, ready to start' : n + ' of ' + boxes.length + ' ready';
+      meter.setAttribute('aria-valuenow', String(n));
+    }
+    boxes.forEach(function (b) {
+      if (saved[b.id]) b.checked = true;
+      b.addEventListener('change', function () {
+        saved[b.id] = b.checked;
+        try { window.localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) { /* storage unavailable */ }
+        update();
+      });
+    });
+    update();
+  })();
+
+  /* ---------- Resource finder ---------- */
+  (function () {
+    var GH = 'https://github.com/microsoft-foundry/ignite-2026-demos';
+    var FOLDER = GH + '/tree/main/finops-on-microsoft-foundry';
+    var LEARN = 'https://learn.microsoft.com/en-us/azure/';
+    var DATA = [
+      ['page', 'Full demo', '#demo', 'On this page · video and story'],
+      ['page', 'Token budget simulator', '#simulator', 'On this page · try a per-conversation budget'],
+      ['page', 'Blog post highlights', '#blog', 'On this page'],
+      ['page', 'Ignite 2026 sessions', '#sessions', 'On this page'],
+      ['page', 'FinOps for AI deck', '#deck', 'On this page'],
+      ['page', 'Documentation', '#docs', 'On this page · model router, caching, PTUs'],
+      ['page', 'Blog series', '#series', 'On this page'],
+      ['page', 'Tokenomics video', '#video', 'On this page'],
+      ['page', 'Hands-on lab', '#lab', 'On this page · with prerequisites checklist'],
+      ['page', 'Further reading', '#reading', 'On this page'],
+      ['video', 'FinOps in Microsoft Foundry: full demo', FOLDER + '#finops-in-microsoft-foundry-full-demo', 'GitHub · 7-minute demo'],
+      ['video', 'FinOps in Microsoft Foundry Full Demo (MP4, 4K, 341 MB)', GH + '/raw/main/finops-on-microsoft-foundry/FinOps%20in%20Microsoft%20Foundry%20Full%20Demo.mp4', 'Download the demo video'],
+      ['blog', 'FinOps in Microsoft Foundry: see your token spend, hit your quality bar for less, and set limits', 'https://aka.ms/Ignite26/foundryfinops', 'Microsoft Foundry Blog'],
+      ['session', 'BRK308: How Microsoft IQ shapes the cost of enterprise AI', 'https://ignite.microsoft.com/en-US/sessions/BRK308', 'Breakout'],
+      ['session', 'BRK280: Designing an agent harness that orchestrates models', 'https://ignite.microsoft.com/en-US/sessions/BRK280', 'Breakout'],
+      ['session', 'BRK249: From traces to better agents: The Foundry improvement loop', 'https://ignite.microsoft.com/en-US/sessions/BRK249', 'Breakout'],
+      ['session', 'BRK482: FinOps for AI: Partner Playbook for Building AI Solutions and Services', 'https://ignite.microsoft.com/en-US/sessions/BRK482', 'Breakout'],
+      ['session', 'LTG1201: Optimizing AI decisions with the model router in Foundry Models', 'https://ignite.microsoft.com/en-US/sessions/LTG1201', 'Lightning talk'],
+      ['session', 'LTG1206: Agent FinOps: Designing agents that scale responsibly', 'https://ignite.microsoft.com/en-US/sessions/LTG1206', 'Lightning talk'],
+      ['session', 'Your guide to FinOps for AI at Microsoft Ignite 2026', 'https://techcommunity.microsoft.com/blog/finopsblog/your-guide-to-finops-for-ai-at-microsoft-ignite-2026/4569117', 'Every FinOps session, including Copilot and GitHub'],
+      ['more', 'FinOps for AI: Plan, manage, and optimize AI value with Microsoft Azure and GitHub', GH + '/blob/main/finops-on-microsoft-foundry/FinOps%20for%20AI%20Azure%20and%20GitHub.PDF', 'Deck · 27 slides (PDF)'],
+      ['docs', 'Plan and manage costs for Microsoft Foundry', LEARN + 'foundry/concepts/manage-costs', 'Microsoft Learn'],
+      ['docs', 'Attribute and cap model spend', 'https://ai.gateway.azure.com/docs/finops', 'Azure AI Gateway docs'],
+      ['docs', 'Model router concepts', LEARN + 'foundry/openai/concepts/model-router', 'Microsoft Learn'],
+      ['docs', 'How to use model router', LEARN + 'foundry/openai/how-to/model-router', 'Microsoft Learn'],
+      ['docs', 'Prompt caching', LEARN + 'foundry/openai/how-to/prompt-caching', 'Microsoft Learn'],
+      ['docs', 'Global batch processing', LEARN + 'foundry/openai/how-to/batch', 'Microsoft Learn'],
+      ['docs', 'Provisioned throughput overview', LEARN + 'foundry/openai/concepts/provisioned-throughput', 'Microsoft Learn · PTU'],
+      ['docs', 'PTU billing', LEARN + 'foundry/openai/concepts/provisioned-throughput-billing', 'Microsoft Learn · PTU'],
+      ['docs', 'PTU sizing', LEARN + 'foundry/openai/how-to/provisioned-throughput-sizing', 'Microsoft Learn · PTU'],
+      ['docs', 'Spillover', LEARN + 'foundry/openai/how-to/spillover-traffic-management', 'Microsoft Learn · PTU'],
+      ['docs', 'PTU reservations', LEARN + 'cost-management-billing/reservations/microsoft-foundry', 'Microsoft Learn · reservations'],
+      ['docs', 'Agent Prepurchase Plan', LEARN + 'cost-management-billing/reservations/agent-pre-purchase', 'Microsoft Learn · prepurchase'],
+      ['blog', 'The Economics of Agent Optimization (series)', 'https://azure.microsoft.com/en-us/blog/tag/the-economics-of-agent-optimization/', 'Azure Blog'],
+      ['blog', 'Part 1: From pilots to measurable returns', 'https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-from-pilots-to-measurable-returns/', 'Azure Blog'],
+      ['blog', 'Part 2: Four ways to lower the cost', 'https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-four-ways-to-lower-the-cost/', 'Azure Blog'],
+      ['blog', 'Part 3: Context engineering for enterprise AI agents', 'https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-context-engineering-for-enterprise-ai-agents/', 'Azure Blog'],
+      ['blog', 'Part 4: How AI agent governance controls cost and proves ROI', 'https://azure.microsoft.com/en-us/blog/the-economics-of-agent-optimization-how-ai-agent-governance-controls-cost-and-proves-roi/', 'Azure Blog'],
+      ['video', 'Tokenomics | The new AI currency & your options explained', 'https://www.youtube.com/watch?v=mB0IyELzjRg', 'YouTube · April Gittens and Jeremy Chapman'],
+      ['video', 'aka.ms/FoundryTokenomics', 'https://aka.ms/FoundryTokenomics', 'More about managing AI costs'],
+      ['more', 'AI-Gateway FinOps framework lab', 'https://github.com/Azure-Samples/AI-Gateway/tree/main/labs/finops-framework', 'Hands-on lab · Azure-Samples'],
+      ['more', 'FinOps toolkit', 'https://github.com/microsoft/finops-toolkit', 'Further reading · Microsoft open source'],
+      ['more', 'FinOps Framework: AI technology category', 'https://www.finops.org/framework/technology-categories/ai/', 'Further reading · FinOps Foundation'],
+      ['more', 'How to Build a Generative AI Cost and Usage Tracker', 'https://www.finops.org/wg/how-to-build-a-generative-ai-cost-and-usage-tracker/', 'Further reading · FinOps Foundation'],
+      ['more', 'Cost Estimation of AI Workloads', 'https://www.finops.org/wg/cost-estimation-of-ai-workloads/', 'Further reading · FinOps Foundation'],
+      ['more', 'Optimizing GenAI Usage', 'https://www.finops.org/wg/optimizing-genai-usage/', 'Further reading · FinOps Foundation'],
+      ['more', 'microsoft-foundry/ignite-2026-demos', GH, 'GitHub repository']
+    ].map(function (r) { return { g: r[0], t: r[1], u: r[2], n: r[3] }; });
+    var KIND = { page: ['On page', 'i-hash'], video: ['Video', 'i-video'], blog: ['Blog', 'i-pen'], session: ['Session', 'i-mic'], docs: ['Docs', 'i-book'], more: ['Resource', 'i-link'] };
+
+    var dlg = $('#palette'), input = $('#palette-q'), list = $('#palette-list'), empty = $('#palette-empty');
+    var chips = $$('#palette .pf'), filter = 'all', active = 0, items = [], lastFocus = null;
+
+    function setActive(i) {
+      active = Math.max(0, Math.min(i, items.length - 1));
+      $$('.pal-item', list).forEach(function (node, j) { node.setAttribute('aria-selected', String(j === active)); });
+      var cur = list.children[active];
+      if (cur) { input.setAttribute('aria-activedescendant', cur.id); cur.scrollIntoView({ block: 'nearest' }); }
+      else input.removeAttribute('aria-activedescendant');
+    }
+    function render() {
+      var terms = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      items = DATA.filter(function (d) {
+        if (filter !== 'all' && d.g !== filter) return false;
+        var hay = (d.t + ' ' + d.n + ' ' + KIND[d.g][0]).toLowerCase();
+        return terms.every(function (t) { return hay.indexOf(t) !== -1; });
+      });
+      list.replaceChildren();
+      items.forEach(function (d, i) {
+        var li = el('li', 'pal-item');
+        li.id = 'pal-opt-' + i;
+        li.setAttribute('role', 'option');
+        var pk = el('span', 'pk');
+        pk.appendChild(icon(KIND[d.g][1]));
+        var txt = el('span');
+        txt.appendChild(el('b', null, d.t));
+        txt.appendChild(el('small', null, d.n));
+        li.appendChild(pk);
+        li.appendChild(txt);
+        li.appendChild(el('span', 'kind', KIND[d.g][0]));
+        li.addEventListener('click', function () { go(d); });
+        li.addEventListener('mousemove', function () { if (active !== i) setActive(i); });
+        list.appendChild(li);
+      });
+      empty.hidden = items.length > 0;
+      setActive(0);
+    }
+    function go(d) {
+      if (d.u.charAt(0) === '#') {
+        close(false);
+        var target = document.getElementById(d.u.slice(1));
+        if (target) {
+          target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          if (history.replaceState) history.replaceState(null, '', d.u);
+        }
+      } else {
+        window.open(d.u, '_blank', 'noopener');
+      }
+    }
+    function open() {
+      lastFocus = document.activeElement;
+      dlg.hidden = false;
+      document.body.classList.add('modal-open');
+      input.value = '';
+      render();
+      requestAnimationFrame(function () { input.focus(); });
+    }
+    function close(restore) {
+      dlg.hidden = true;
+      document.body.classList.remove('modal-open');
+      if (restore !== false && lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    $$('.open-palette').forEach(function (b) { b.addEventListener('click', open); });
+    $$('[data-close]', dlg).forEach(function (b) { b.addEventListener('click', function () { close(true); }); });
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        filter = c.getAttribute('data-g');
+        chips.forEach(function (x) { x.setAttribute('aria-pressed', String(x === c)); });
+        render();
+        input.focus();
+      });
+    });
+    input.addEventListener('input', render);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+      else if (e.key === 'Enter') { e.preventDefault(); if (items[active]) go(items[active]); }
+    });
+    dlg.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); close(true); return; }
+      if (e.key !== 'Tab') return;
+      var f = $$('input, button', dlg).filter(function (n) { return !n.disabled && n.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (!dlg.hidden) return;
+      var t = e.target, tag = (t && t.tagName ? t.tagName : '').toLowerCase();
+      var typing = (tag === 'input' && /^(text|search|email|number|password|url|tel)$/i.test(t.type || 'text')) || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable);
+      if ((e.key === '/' && !typing) || ((e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey))) { e.preventDefault(); open(); }
+      else if (e.key === 'Escape' && nav.classList.contains('open')) { closeNav(); navBtn.focus(); }
+    });
+  })();
+})();
+</script>
+</body>
+</html>
